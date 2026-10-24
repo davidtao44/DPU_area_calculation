@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/home/davidgonza04/Documents/UNIVERSIDAD_2.0/asic-area-lab/docs/diagramas/especificaciones/04_PRUEBAS_COMPONENTES.json",
+  "output": "/home/davidgonza04/Documents/UNIVERSIDAD_2.0/asic-area-lab/docs/diagramas/04_PRUEBAS_COMPONENTES.html",
+  "specification": {
+    "sha256": "f99a06af43859cf9ebe9bcf49b48eb681835e042f4fe4e7d3541cefcf848ed9c",
+    "bytes": 7445
+  },
+  "artifact": {
+    "sha256": "497534e82edd3c80f35d9a12a219742cd5bc9bcd24ecbb0b3e79886f56cce93a",
+    "bytes": 720530
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  }
+}

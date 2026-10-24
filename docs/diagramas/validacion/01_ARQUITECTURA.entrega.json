@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/home/davidgonza04/Documents/UNIVERSIDAD_2.0/asic-area-lab/docs/diagramas/especificaciones/01_ARQUITECTURA.json",
+  "output": "/home/davidgonza04/Documents/UNIVERSIDAD_2.0/asic-area-lab/docs/diagramas/01_ARQUITECTURA.html",
+  "specification": {
+    "sha256": "2fa8a4413c761a50ec27f79eaf96cd25258cf1ad275b989ea41d3bffa547657f",
+    "bytes": 7971
+  },
+  "artifact": {
+    "sha256": "ed15289671db153896c3fc83c79e66f7e17c14790080c5202b0ca9aedf0ea649",
+    "bytes": 724151
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  }
+}

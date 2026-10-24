@@ -1,0 +1,277 @@
+{
+  "total_area": 896.139264,
+  "combinational_area": 773.455872,
+  "sequential_area": 122.683392,
+  "flip_flop_area": 122.683392,
+  "latch_area": 0.0,
+  "macro_area": 0.0,
+  "total_cells": 2844,
+  "cell_counts": {
+    "combinational": 2748,
+    "flip_flop": 96,
+    "latch": 0,
+    "macro": 0
+  },
+  "cells": [
+    {
+      "name": "AND2_X1",
+      "category": "combinational",
+      "count": 113,
+      "unit_area": 0.294912,
+      "total_area": 33.325056
+    },
+    {
+      "name": "AND3_X1",
+      "category": "combinational",
+      "count": 51,
+      "unit_area": 0.393216,
+      "total_area": 20.054016
+    },
+    {
+      "name": "AND4_X1",
+      "category": "combinational",
+      "count": 24,
+      "unit_area": 0.442368,
+      "total_area": 10.616832
+    },
+    {
+      "name": "AOI21_X1",
+      "category": "combinational",
+      "count": 197,
+      "unit_area": 0.294912,
+      "total_area": 58.097664
+    },
+    {
+      "name": "AOI22_X1",
+      "category": "combinational",
+      "count": 88,
+      "unit_area": 0.344064,
+      "total_area": 30.277632
+    },
+    {
+      "name": "DFFRNQ_X1",
+      "category": "flip_flop",
+      "count": 96,
+      "unit_area": 1.277952,
+      "total_area": 122.683392
+    },
+    {
+      "name": "INV_X1",
+      "category": "combinational",
+      "count": 168,
+      "unit_area": 0.147456,
+      "total_area": 24.772608
+    },
+    {
+      "name": "MUX2_X1",
+      "category": "combinational",
+      "count": 4,
+      "unit_area": 0.638976,
+      "total_area": 2.555904
+    },
+    {
+      "name": "NAND2_X1",
+      "category": "combinational",
+      "count": 467,
+      "unit_area": 0.196608,
+      "total_area": 91.815936
+    },
+    {
+      "name": "NAND3_X1",
+      "category": "combinational",
+      "count": 142,
+      "unit_area": 0.294912,
+      "total_area": 41.877504
+    },
+    {
+      "name": "NAND4_X1",
+      "category": "combinational",
+      "count": 83,
+      "unit_area": 0.344064,
+      "total_area": 28.557312
+    },
+    {
+      "name": "NOR2_X1",
+      "category": "combinational",
+      "count": 440,
+      "unit_area": 0.196608,
+      "total_area": 86.50752
+    },
+    {
+      "name": "NOR3_X1",
+      "category": "combinational",
+      "count": 129,
+      "unit_area": 0.294912,
+      "total_area": 38.043648
+    },
+    {
+      "name": "NOR4_X1",
+      "category": "combinational",
+      "count": 68,
+      "unit_area": 0.344064,
+      "total_area": 23.396352
+    },
+    {
+      "name": "OAI21_X1",
+      "category": "combinational",
+      "count": 232,
+      "unit_area": 0.294912,
+      "total_area": 68.419584
+    },
+    {
+      "name": "OAI22_X1",
+      "category": "combinational",
+      "count": 101,
+      "unit_area": 0.344064,
+      "total_area": 34.750464
+    },
+    {
+      "name": "OR2_X1",
+      "category": "combinational",
+      "count": 91,
+      "unit_area": 0.294912,
+      "total_area": 26.836992
+    },
+    {
+      "name": "OR3_X1",
+      "category": "combinational",
+      "count": 26,
+      "unit_area": 0.393216,
+      "total_area": 10.223616
+    },
+    {
+      "name": "OR4_X1",
+      "category": "combinational",
+      "count": 17,
+      "unit_area": 0.442368,
+      "total_area": 7.520256
+    },
+    {
+      "name": "XNOR2_X1",
+      "category": "combinational",
+      "count": 176,
+      "unit_area": 0.442368,
+      "total_area": 77.856768
+    },
+    {
+      "name": "XOR2_X1",
+      "category": "combinational",
+      "count": 131,
+      "unit_area": 0.442368,
+      "total_area": 57.950208
+    }
+  ],
+  "area_unit": "um2",
+  "area_unit_basis": "Nangate OCL: cell area in \u00b5m\u00b2; DOI 10.1145/2717764.2717783 for 15 nm.",
+  "design_id": "int8_16",
+  "numeric_format": "INT8_16",
+  "top": "INT8_16_DPU_perf_top",
+  "technology_id": "nangate15",
+  "technology_label": "Nangate FreePDK15",
+  "node_nm": 15,
+  "corner": "typical",
+  "voltage_v": 0.8,
+  "temperature_c": 25,
+  "duration_seconds": 13.776,
+  "validation": {
+    "rtl": "passed",
+    "mapped": "passed",
+    "vectors": 256,
+    "seed": 20261005,
+    "formal_equivalence": "not_run",
+    "timing_analysis": "not_run"
+  },
+  "manifest": {
+    "schema_version": 1,
+    "experiment_id": "98b456ce-5e1d-4d4d-9c05-28b67eb69b3c",
+    "design": {
+      "id": "int8_16",
+      "label": "DPU INT8 / acumulaci\u00f3n INT16",
+      "numeric_format": "INT8_16",
+      "top": "INT8_16_DPU_perf_top",
+      "source_files": [
+        "rtl/int8_16/INT8_Mult.vhd",
+        "rtl/int8_16/INT8_Adder.vhd",
+        "rtl/int8_16/INT8_DPU.vhd"
+      ],
+      "wrapper_file": "rtl/int8_16/INT8_16_DPU_perf_top.vhd",
+      "declared_register_bits": 96
+    },
+    "technology": {
+      "id": "nangate15",
+      "label": "Nangate FreePDK15",
+      "node_nm": 15,
+      "corner": "typical",
+      "voltage_v": 0.8,
+      "temperature_c": 25,
+      "liberty_file": "libraries/nangate15/cells.lib",
+      "available": true,
+      "reason": null,
+      "area_unit": "um2",
+      "unit_basis": "Nangate OCL: cell area in \u00b5m\u00b2; DOI 10.1145/2717764.2717783 for 15 nm."
+    },
+    "source_sha256": {
+      "rtl/int8_16/INT8_Mult.vhd": "00580f3b02e4d9f68afb7ab69e6195860e307ea3f56b6f3189347f50f7ba6de4",
+      "rtl/int8_16/INT8_Adder.vhd": "8df7e98c29bd94df00677627d7be99e2e147d869e093d1323c498f8f2fda345f",
+      "rtl/int8_16/INT8_DPU.vhd": "7e51fabb54c97c5bb4c8b01ec5134b17db48a0dbf126f3806822f35692ea7bd5",
+      "rtl/int8_16/INT8_16_DPU_perf_top.vhd": "b3173d3adc784fd29701950fe85a81df43f338508359d860802b0ddf05d1ad01"
+    },
+    "liberty_sha256": "095358eae5326b9ab5530b42b9835e190df7bf2d35bdd136b05940bfff01dfc3",
+    "tool_versions": {
+      "ghdl": "GHDL 7.0.0-dev (6.0.0.r485.gfc6fddc30.dirty) [Dunoon edition]",
+      "yosys": "Yosys 0.68+182 (git sha1 0bf55a858-dirty, Release, Clang /usr/bin/clang++ 21.1.8)",
+      "iverilog": "Icarus Verilog version 14.0 (devel) (s20260301-394-g9edaf7b6a-dirty)"
+    },
+    "scope": "standard_cell_area_only",
+    "mapping_policy": "Yosys synth -noabc; dfflibmap; ABC default Liberty mapping; no timing target",
+    "memory_policy": "ROM lowered to combinational logic; no SRAM macros",
+    "functional_test": {
+      "seed": 20261005,
+      "arithmetic": "signed INT8 dot product modulo 2^16"
+    },
+    "excluded": [
+      "routing",
+      "wire_area",
+      "placement",
+      "floorplan",
+      "pads",
+      "clock_tree"
+    ],
+    "asset_snapshot": {
+      "repository_commit": "e677293903571c824430bb35a246f295486eea33",
+      "files": [
+        {
+          "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/int8_16/needed_flopoco_files/INT8_Mult.vhd",
+          "snapshot": "rtl/int8_16/INT8_Mult.vhd",
+          "sha256": "00580f3b02e4d9f68afb7ab69e6195860e307ea3f56b6f3189347f50f7ba6de4"
+        },
+        {
+          "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/int8_16/needed_flopoco_files/INT8_Adder.vhd",
+          "snapshot": "rtl/int8_16/INT8_Adder.vhd",
+          "sha256": "8df7e98c29bd94df00677627d7be99e2e147d869e093d1323c498f8f2fda345f"
+        },
+        {
+          "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/int8_16/INT8_DPU.vhd",
+          "snapshot": "rtl/int8_16/INT8_DPU.vhd",
+          "sha256": "7e51fabb54c97c5bb4c8b01ec5134b17db48a0dbf126f3806822f35692ea7bd5"
+        },
+        {
+          "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/wrappers/INT8_16_DPU_perf_top.vhd",
+          "snapshot": "rtl/int8_16/INT8_16_DPU_perf_top.vhd",
+          "sha256": "b3173d3adc784fd29701950fe85a81df43f338508359d860802b0ddf05d1ad01"
+        },
+        {
+          "original": "syn_libraries/130nm/lib/sg13g2_stdcell_typ_1p20V_25C.lib",
+          "snapshot": "libraries/ihp130/cells.lib",
+          "sha256": "fe04935bafe2acfbbad808695c6b1511c3f2550d37a4d0cc23f776ff1763bb1b"
+        },
+        {
+          "original": "syn_libraries/15nm/NLDM/NanGate_15nm_OCL_typical_conditional_nldm.lib",
+          "snapshot": "libraries/nangate15/cells.lib",
+          "sha256": "095358eae5326b9ab5530b42b9835e190df7bf2d35bdd136b05940bfff01dfc3"
+        }
+      ],
+      "note": "Hashes identify exact source bytes even if the repository has local changes."
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "created_at": "2026-10-09",
+  "skill": "archify 2.17",
+  "execution_mode": "unmodified Archify CLI with temporary Worker Threads adapter for spawnSync restriction",
+  "application_or_synthesis_executed": false,
+  "diagrams": [
+    {
+      "diagram_type": "architecture",
+      "output": "01_ARQUITECTURA.html",
+      "specification_sha256": "2fa8a4413c761a50ec27f79eaf96cd25258cf1ad275b989ea41d3bffa547657f",
+      "artifact_sha256": "ed15289671db153896c3fc83c79e66f7e17c14790080c5202b0ca9aedf0ea649",
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      },
+      "browser_evidence": "failed",
+      "visual_review": "skipped (browser blocked; no browser captures)",
+      "static_svg_review": "passed",
+      "correction_rounds": 1
+    },
+    {
+      "diagram_type": "workflow",
+      "output": "02_EVALUACION.html",
+      "specification_sha256": "643ef398f6e2901665390ffbb40c7492bf56315766783f58d2491d3e23196783",
+      "artifact_sha256": "d928f32ed5ac08d20021a9f91b1abce78387d92de76c7d9ecd280c9df517a7f0",
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      },
+      "browser_evidence": "failed",
+      "visual_review": "skipped (browser blocked; no browser captures)",
+      "static_svg_review": "passed",
+      "correction_rounds": 1
+    },
+    {
+      "diagram_type": "architecture",
+      "output": "03_COMANDOS.html",
+      "specification_sha256": "216af4047a63b1003aedbc68eb476a32e6daeb3e43883b2a90392270574010a9",
+      "artifact_sha256": "4bda3c14755d2627691c67bf25a29aa3ee78c43525d869aa3391698528933a8a",
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      },
+      "browser_evidence": "failed",
+      "visual_review": "skipped (browser blocked; no browser captures)",
+      "static_svg_review": "passed",
+      "correction_rounds": 1
+    },
+    {
+      "diagram_type": "architecture",
+      "output": "04_PRUEBAS_COMPONENTES.html",
+      "specification_sha256": "f99a06af43859cf9ebe9bcf49b48eb681835e042f4fe4e7d3541cefcf848ed9c",
+      "artifact_sha256": "497534e82edd3c80f35d9a12a219742cd5bc9bcd24ecbb0b3e79886f56cce93a",
+      "validation": {
+        "checksPassed": 9,
+        "checkCount": 9,
+        "compositionProfile": "showcase",
+        "compositionStatus": "pass",
+        "errors": 0,
+        "warnings": 0
+      },
+      "browser_evidence": "failed",
+      "visual_review": "skipped (browser blocked; no browser captures)",
+      "static_svg_review": "passed",
+      "correction_rounds": 0,
+      "content_status": "proposed expansion; only INT8_16 currently implemented"
+    }
+  ]
+}

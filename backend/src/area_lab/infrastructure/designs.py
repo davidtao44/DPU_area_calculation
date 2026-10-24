@@ -1,0 +1,165 @@
+"""Reviewed profiles for the existing registered DPU wrappers; no RTL rewriting."""
+
+from area_lab.domain.models import Design
+
+
+def _profile(
+    identifier: str,
+    label: str,
+    operand_bits: int,
+    result_bits: int,
+    family: str,
+    files: tuple[str, ...],
+    notes: str,
+    compilation: str = "files",
+) -> Design:
+    top = f"{identifier.upper()}_DPU_perf_top"
+    registers = 8 * operand_bits + 2 * result_bits
+    return Design(
+        id=identifier,
+        label=label,
+        numeric_format=identifier.upper(),
+        top=top,
+        source_files=tuple(f"rtl/{identifier}/{name}" for name in files),
+        wrapper_file=f"rtl/{identifier}/{top}.vhd",
+        declared_register_bits=registers,
+        library=f"{identifier}_lib",
+        operand_bits=operand_bits,
+        result_bits=result_bits,
+        family=family,
+        reference="signed_dot_modulo" if family == "integer" else "rtl_bit_exact",
+        expected_flip_flops=registers if family == "integer" else None,
+        numeric_notes=notes,
+        compilation=compilation,
+    )
+
+
+DESIGNS = (
+    _profile(
+        "int8_16",
+        "DPU INT8 / resultado INT16",
+        8,
+        16,
+        "integer",
+        (
+            "needed_flopoco_files/INT8_Mult.vhd",
+            "needed_flopoco_files/INT8_Adder.vhd",
+            "INT8_DPU.vhd",
+        ),
+        "Enteros con signo; resultado módulo 2^16.",
+    ),
+    _profile(
+        "int16_32",
+        "DPU INT16 / resultado INT32",
+        16,
+        32,
+        "integer",
+        (
+            "needed_flopoco_files/def_package.vhd",
+            "needed_flopoco_files/Multiplier_INT.vhd",
+            "needed_flopoco_files/Adder_INT.vhd",
+            "DPU_TOP_INT.vhd",
+        ),
+        "Enteros con signo; resultado módulo 2^32.",
+    ),
+    _profile(
+        "fxp8_16",
+        "DPU FXP8 / resultado FXP16",
+        8,
+        16,
+        "fixed",
+        ("needed_flopoco_files/FixedPoint8_16_MAC.vhd", "FixedPoint8_16DPU.vhd"),
+        "Operandos con 5 bits fraccionarios; resultado con 10. MAC encadenadas originales.",
+    ),
+    _profile(
+        "fxp16_32",
+        "DPU FXP16 / resultado FXP32",
+        16,
+        32,
+        "fixed",
+        ("needed_flopoco_files/FixedPointMAC.vhd", "FixedPointDPU.vhd"),
+        "Operandos con 10 bits fraccionarios; resultado con 20. MAC encadenadas originales.",
+    ),
+    _profile(
+        "fp8",
+        "DPU FP8 e4m3",
+        8,
+        8,
+        "floating",
+        ("needed_flopoco_files/FMA_FP8e4m3flopoco.vhd", "DPU_FP8e4m3flopoco.vhd"),
+        "e4m3 del RTL FloPoCo; no se presupone equivalencia con e4m3fn de software.",
+    ),
+    _profile(
+        "fp16",
+        "DPU FP16",
+        16,
+        16,
+        "floating",
+        ("needed_flopoco_files/FP16_FMA.vhd", "FP16_DPU.vhd"),
+        "e5m10; cuatro FMA encadenadas con el redondeo definido por el RTL.",
+    ),
+    _profile(
+        "fp32",
+        "DPU FP32",
+        32,
+        32,
+        "floating",
+        ("needed_flopoco_files/FMA_FP32e8m23flopoco.vhd", "DPU_FP32e8m23flopoco.vhd"),
+        "e8m23; cuatro FMA encadenadas con el redondeo definido por el RTL.",
+    ),
+    _profile(
+        "posit8",
+        "DPU Posit8 (es=0)",
+        8,
+        8,
+        "posit",
+        (
+            "needed_flopoco_files/Posit_Mult.vhd",
+            "needed_flopoco_files/Posit_Adder.vhd",
+            "Posit_DPU.vhd",
+        ),
+        "Posit n=8, es=0; multiplicación y árbol de sumas del repositorio.",
+    ),
+    _profile(
+        "posit16",
+        "DPU Posit16 (es=1)",
+        16,
+        16,
+        "posit",
+        (
+            "needed_flopoco_files/posit16_0_Mul.vhd",
+            "needed_flopoco_files/posit16_0_Add.vhd",
+            "posit16_0_DPU.vhd",
+        ),
+        "Posit n=16, es=1 según el RTL, aunque los archivos se llaman posit16_0_*.",
+        compilation="unique_ghdl_units",
+    ),
+    _profile(
+        "posit32",
+        "DPU Posit32 (es=2)",
+        32,
+        32,
+        "posit",
+        (
+            "needed_flopoco_files/Posit32_2_Mul.vhd",
+            "needed_flopoco_files/Posit32_2_Add.vhd",
+            "Posit32_2_DPU.vhd",
+        ),
+        "Posit n=32, es=2; multiplicación y árbol de sumas del repositorio.",
+        compilation="unique_ghdl_units",
+    ),
+    _profile(
+        "lns16",
+        "DPU LNS16 (wE=4, wF=9)",
+        16,
+        16,
+        "logarithmic",
+        (
+            "needed_flopoco_files/LNSSubCorrectionPkg.vhd",
+            "needed_flopoco_files/LNSMul_4_9_comb.vhd",
+            "needed_flopoco_files/LNSAddSub_4_9_comb.vhd",
+            "LNS16_4_9_DPU.vhd",
+        ),
+        "LNS con excepciones y tablas de corrección originales; ROM reducida a lógica.",
+    ),
+)

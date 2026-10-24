@@ -1,0 +1,402 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "ASIC Area Lab · Arquitectura del pipeline",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1395,
+      850
+    ],
+    "views": [
+      {
+        "id": "recorrido",
+        "label": "Solicitud y ejecución",
+        "focus": [
+          "navegador",
+          "api",
+          "aplicacion",
+          "worker",
+          "adaptador",
+          "herramientas"
+        ],
+        "note": "HTTP inicia el trabajo; un worker ejecuta procesos EDA dentro del contenedor."
+      },
+      {
+        "id": "capas",
+        "label": "Dominio y adaptadores",
+        "focus": [
+          "api",
+          "aplicacion",
+          "dominio",
+          "puertos",
+          "repositorio",
+          "adaptador"
+        ],
+        "note": "Los contratos son interfaces de Python, no servicios externos."
+      },
+      {
+        "id": "datos",
+        "label": "Entradas y persistencia",
+        "focus": [
+          "assets",
+          "herramientas",
+          "repositorio",
+          "sqlite",
+          "adaptador",
+          "archivos"
+        ],
+        "note": "Las bibliotecas y fuentes son entradas; el volumen conserva el historial y los artefactos."
+      }
+    ],
+    "legend": {
+      "entries": {
+        "frontend": {
+          "label": "Cliente web"
+        },
+        "backend": {
+          "label": "Procesamiento"
+        },
+        "database": {
+          "label": "Datos"
+        },
+        "messagebus": {
+          "label": "Cola"
+        },
+        "security": {
+          "label": "Validación"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "navegador",
+      "type": "frontend",
+      "label": "React en navegador",
+      "sublabel": "React Query + Zod",
+      "pos": [
+        15,
+        230
+      ],
+      "size": [
+        165,
+        84
+      ],
+      "tag": "Cliente HTTP"
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "FastAPI / Uvicorn",
+      "sublabel": "api/ · HTTP :8000",
+      "pos": [
+        265,
+        230
+      ],
+      "size": [
+        185,
+        84
+      ],
+      "tag": "Sirve React compilado"
+    },
+    {
+      "id": "aplicacion",
+      "type": "backend",
+      "label": "ExperimentService",
+      "sublabel": "application/ · casos de uso",
+      "pos": [
+        535,
+        230
+      ],
+      "size": [
+        230,
+        84
+      ],
+      "tag": "Validar · crear · consultar"
+    },
+    {
+      "id": "dominio",
+      "type": "backend",
+      "label": "Entidades del dominio",
+      "sublabel": "Design · Technology · Experiment",
+      "pos": [
+        535,
+        60
+      ],
+      "size": [
+        230,
+        84
+      ],
+      "tag": "domain/models.py"
+    },
+    {
+      "id": "puertos",
+      "type": "backend",
+      "label": "Contratos del dominio",
+      "sublabel": "Repositorio y síntesis",
+      "pos": [
+        535,
+        430
+      ],
+      "size": [
+        230,
+        84
+      ],
+      "tag": "domain/ports.py"
+    },
+    {
+      "id": "worker",
+      "type": "messagebus",
+      "label": "Cola + worker",
+      "sublabel": "4 en espera · 1 activo",
+      "pos": [
+        880,
+        230
+      ],
+      "size": [
+        220,
+        84
+      ],
+      "tag": "asyncio · memoria"
+    },
+    {
+      "id": "adaptador",
+      "type": "backend",
+      "label": "Adaptador de síntesis",
+      "sublabel": "GhdlYosysSynthesis",
+      "pos": [
+        880,
+        430
+      ],
+      "size": [
+        220,
+        84
+      ],
+      "tag": "infrastructure/"
+    },
+    {
+      "id": "herramientas",
+      "type": "backend",
+      "label": "Procesos EDA",
+      "sublabel": "GHDL · Yosys · Icarus",
+      "pos": [
+        1170,
+        430
+      ],
+      "size": [
+        190,
+        84
+      ],
+      "tag": "subprocess · 180 s/comando"
+    },
+    {
+      "id": "repositorio",
+      "type": "backend",
+      "label": "Repositorio SQLite",
+      "sublabel": "SQLiteExperimentRepository",
+      "pos": [
+        265,
+        430
+      ],
+      "size": [
+        220,
+        84
+      ],
+      "tag": "infrastructure/"
+    },
+    {
+      "id": "sqlite",
+      "type": "database",
+      "label": "SQLite persistente",
+      "sublabel": "experiments.sqlite3",
+      "pos": [
+        265,
+        650
+      ],
+      "size": [
+        220,
+        84
+      ],
+      "tag": "/app/data"
+    },
+    {
+      "id": "assets",
+      "type": "database",
+      "label": "Assets del piloto",
+      "sublabel": "VHDL INT8 + Liberty 130/15",
+      "pos": [
+        1170,
+        230
+      ],
+      "size": [
+        190,
+        84
+      ],
+      "tag": "45 nm pendiente"
+    },
+    {
+      "id": "archivos",
+      "type": "database",
+      "label": "Artefactos por evaluación",
+      "sublabel": "runs/<id> · JSON · CSV · logs",
+      "pos": [
+        880,
+        650
+      ],
+      "size": [
+        220,
+        84
+      ],
+      "tag": "/app/data"
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Contenedor area-lab · Python 3.12 / Debian Trixie · 1 proceso web",
+      "wraps": [
+        "api",
+        "aplicacion",
+        "dominio",
+        "puertos",
+        "worker",
+        "adaptador",
+        "herramientas",
+        "repositorio",
+        "assets"
+      ],
+      "pad": 24
+    },
+    {
+      "kind": "region",
+      "label": "Volumen area-lab-data · montado en /app/data",
+      "wraps": [
+        "sqlite",
+        "archivos"
+      ],
+      "pad": 24
+    }
+  ],
+  "connections": [
+    {
+      "from": "navegador",
+      "to": "api",
+      "label": "HTTP / JSON",
+      "variant": "emphasis"
+    },
+    {
+      "from": "api",
+      "to": "aplicacion",
+      "label": "Casos de uso",
+      "variant": "emphasis"
+    },
+    {
+      "from": "aplicacion",
+      "to": "worker",
+      "label": "Encolar ID",
+      "variant": "emphasis"
+    },
+    {
+      "from": "aplicacion",
+      "to": "dominio",
+      "label": "Usa entidades",
+      "variant": "dashed"
+    },
+    {
+      "from": "aplicacion",
+      "to": "puertos",
+      "label": "Usa contratos",
+      "variant": "dashed",
+      "labelAt": [
+        650,
+        372
+      ]
+    },
+    {
+      "from": "repositorio",
+      "to": "puertos",
+      "label": "Implementa repositorio",
+      "variant": "dashed",
+      "labelAt": [
+        510,
+        528
+      ]
+    },
+    {
+      "from": "adaptador",
+      "to": "puertos",
+      "label": "Implementa síntesis",
+      "variant": "dashed"
+    },
+    {
+      "from": "worker",
+      "to": "adaptador",
+      "label": "asyncio.to_thread",
+      "variant": "emphasis",
+      "labelAt": [
+        990,
+        372
+      ]
+    },
+    {
+      "from": "adaptador",
+      "to": "herramientas",
+      "label": "Ejecuta CLI",
+      "variant": "emphasis"
+    },
+    {
+      "from": "assets",
+      "to": "herramientas",
+      "label": "RTL + celdas",
+      "labelAt": [
+        1265,
+        372
+      ]
+    },
+    {
+      "from": "repositorio",
+      "to": "sqlite",
+      "label": "Lee / guarda",
+      "labelAt": [
+        375,
+        582
+      ]
+    },
+    {
+      "from": "adaptador",
+      "to": "archivos",
+      "label": "Escribe archivos",
+      "labelAt": [
+        990,
+        582
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Capas de código",
+      "items": [
+        "Entidades: Design, Technology y Experiment.",
+        "Puertos: ExperimentRepository y SynthesisGateway."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Un contenedor",
+      "items": [
+        "FastAPI sirve el frontend compilado; React corre en el navegador.",
+        "SQLite está embebido; la cola y el worker pertenecen a application/."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Alcance actual",
+      "items": [
+        "INT8/16 con wrapper: 96 FF. Bibliotecas 130 y 15 nm.",
+        "45 nm pendiente; TCU y otros formatos requieren ampliar el adaptador."
+      ]
+    }
+  ]
+}

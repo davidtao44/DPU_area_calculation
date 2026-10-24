@@ -1,0 +1,12 @@
+{
+  "slides": 53,
+  "editable_diagrams": true,
+  "native_charts": 2,
+  "logo": "gira.png, original sin modificar",
+  "geometry_checks": 1679,
+  "text_overflow": [],
+  "pdf_renderer": "PDFKit desde la misma geometría; no se afirma render de PowerPoint/LibreOffice",
+  "eda_executed": false,
+  "pdf_visual_review": "Contact sheets reviewed for all original pages and new pipeline/stack appendices; final typography and bibliography layouts checked by text metrics.",
+  "code_unchanged_since_audit": true
+}

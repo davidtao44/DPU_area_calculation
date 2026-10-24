@@ -1,0 +1,356 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "ASIC Area Lab · Recorrido de una evaluación",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "inicio",
+        "label": "Elegir y solicitar",
+        "focus": [
+          "seleccion",
+          "solicitud",
+          "validacion_api",
+          "cola"
+        ],
+        "note": "El diseño INT8/16 está fijado; el usuario selecciona 130 o 15 nm."
+      },
+      {
+        "id": "trabajo",
+        "label": "Worker y controles",
+        "focus": [
+          "cola",
+          "preparacion",
+          "ejecucion",
+          "controles",
+          "guardar"
+        ],
+        "note": "La API responde 202 antes de que termine el cálculo."
+      },
+      {
+        "id": "incidencias",
+        "label": "Estados de fallo",
+        "focus": [
+          "validacion_api",
+          "rechazo",
+          "ejecucion",
+          "controles",
+          "fallo",
+          "cola"
+        ],
+        "note": "Un fallo no equivale a área cero. Un reinicio marca los trabajos inconclusos como interrupted."
+      }
+    ],
+    "legend": {
+      "entries": {
+        "frontend": {
+          "label": "Cliente web"
+        },
+        "backend": {
+          "label": "Procesamiento"
+        },
+        "database": {
+          "label": "Datos"
+        },
+        "messagebus": {
+          "label": "Cola"
+        },
+        "security": {
+          "label": "Validación"
+        }
+      }
+    }
+  },
+  "lanes": [
+    {
+      "id": "usuario",
+      "label": "Usuario / React"
+    },
+    {
+      "id": "api",
+      "label": "FastAPI / application"
+    },
+    {
+      "id": "eda",
+      "label": "Worker / infraestructura EDA"
+    },
+    {
+      "id": "salida",
+      "label": "Persistencia / consulta"
+    },
+    {
+      "id": "incidencias",
+      "label": "Rechazo e interrupción",
+      "variant": "exception"
+    }
+  ],
+  "phases": [
+    {
+      "id": "eleccion",
+      "label": "Configurar",
+      "fromCol": 0,
+      "toCol": 1
+    },
+    {
+      "id": "calculo",
+      "label": "Ejecutar",
+      "fromCol": 2,
+      "toCol": 3,
+      "variant": "emphasis"
+    },
+    {
+      "id": "resultado",
+      "label": "Verificar y reportar",
+      "fromCol": 4,
+      "toCol": 5
+    }
+  ],
+  "mainPath": [
+    "seleccion",
+    "solicitud",
+    "validacion_api",
+    "cola",
+    "preparacion",
+    "ejecucion",
+    "controles",
+    "guardar",
+    "consultar"
+  ],
+  "semanticChecks": {
+    "allowedRoots": [
+      "seleccion"
+    ],
+    "allowedTerminals": [
+      "consultar",
+      "rechazo",
+      "fallo"
+    ],
+    "requiredPaths": [
+      {
+        "from": "seleccion",
+        "to": "consultar"
+      },
+      {
+        "from": "validacion_api",
+        "to": "rechazo"
+      },
+      {
+        "from": "ejecucion",
+        "to": "fallo"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "seleccion",
+      "lane": "usuario",
+      "col": 0,
+      "type": "frontend",
+      "label": "Elegir configuración",
+      "sublabel": "INT8/16 + tecnología",
+      "tag": "130 / 15 nm",
+      "width": 165,
+      "height": 76
+    },
+    {
+      "id": "solicitud",
+      "lane": "usuario",
+      "col": 1,
+      "type": "frontend",
+      "label": "Solicitar evaluación",
+      "sublabel": "POST /api/v1/experiments",
+      "tag": "IDs de catálogo",
+      "width": 165,
+      "height": 76
+    },
+    {
+      "id": "validacion_api",
+      "lane": "api",
+      "col": 1,
+      "type": "security",
+      "label": "Validar solicitud",
+      "sublabel": "Diseño, Liberty y capacidad",
+      "tag": "Pydantic + servicio",
+      "width": 165,
+      "height": 76
+    },
+    {
+      "id": "cola",
+      "lane": "api",
+      "col": 2,
+      "type": "messagebus",
+      "label": "Guardar y encolar",
+      "sublabel": "queued → running",
+      "tag": "HTTP 202 + ID",
+      "width": 165,
+      "height": 76
+    },
+    {
+      "id": "preparacion",
+      "lane": "eda",
+      "col": 2,
+      "type": "backend",
+      "label": "Preparar ejecución",
+      "sublabel": "Copias + SHA-256 + manifiesto",
+      "tag": "runs/<id>",
+      "width": 165,
+      "height": 76
+    },
+    {
+      "id": "ejecucion",
+      "lane": "eda",
+      "col": 3,
+      "type": "backend",
+      "label": "Ejecutar pipeline",
+      "sublabel": "GHDL → Yosys → Icarus",
+      "tag": "1 trabajo activo",
+      "width": 165,
+      "height": 76
+    },
+    {
+      "id": "controles",
+      "lane": "eda",
+      "col": 4,
+      "type": "security",
+      "label": "Comprobar resultado",
+      "sublabel": "256 vectores + área completa",
+      "tag": "96 FF · sin latches",
+      "width": 165,
+      "height": 76
+    },
+    {
+      "id": "guardar",
+      "lane": "salida",
+      "col": 4,
+      "type": "database",
+      "label": "Guardar reporte",
+      "sublabel": "succeeded · JSON / CSV",
+      "tag": "SQLite + archivos",
+      "width": 165,
+      "height": 76
+    },
+    {
+      "id": "consultar",
+      "lane": "salida",
+      "col": 5,
+      "type": "frontend",
+      "label": "Mostrar y descargar",
+      "sublabel": "Historial, gráfico y ZIP",
+      "tag": "GET /api/v1/experiments",
+      "width": 165,
+      "height": 76
+    },
+    {
+      "id": "rechazo",
+      "lane": "incidencias",
+      "col": 1,
+      "type": "security",
+      "label": "Rechazar solicitud",
+      "sublabel": "400 / 422 / 429",
+      "tag": "Sin iniciar EDA",
+      "width": 165,
+      "height": 76
+    },
+    {
+      "id": "fallo",
+      "lane": "incidencias",
+      "col": 3,
+      "type": "security",
+      "label": "Registrar fallo",
+      "sublabel": "failed · error + logs",
+      "tag": "Sin área válida",
+      "width": 165,
+      "height": 76
+    }
+  ],
+  "edges": [
+    {
+      "from": "seleccion",
+      "to": "solicitud",
+      "role": "main"
+    },
+    {
+      "from": "solicitud",
+      "to": "validacion_api",
+      "role": "main"
+    },
+    {
+      "from": "validacion_api",
+      "to": "cola",
+      "role": "main"
+    },
+    {
+      "from": "cola",
+      "to": "preparacion",
+      "role": "main"
+    },
+    {
+      "from": "preparacion",
+      "to": "ejecucion",
+      "role": "main"
+    },
+    {
+      "from": "ejecucion",
+      "to": "controles",
+      "role": "main"
+    },
+    {
+      "from": "controles",
+      "to": "guardar",
+      "role": "main"
+    },
+    {
+      "from": "guardar",
+      "to": "consultar",
+      "role": "main"
+    },
+    {
+      "from": "validacion_api",
+      "to": "rechazo",
+      "role": "error",
+      "label": "Solicitud inválida",
+      "variant": "security"
+    },
+    {
+      "from": "ejecucion",
+      "to": "fallo",
+      "role": "error",
+      "label": "Error de herramienta",
+      "variant": "security"
+    },
+    {
+      "from": "controles",
+      "to": "fallo",
+      "role": "error",
+      "label": "Control fallido",
+      "variant": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Elecciones",
+      "items": [
+        "Circuito y formato: top INT8_16_DPU_perf_top, fijado en este piloto.",
+        "Tecnología: Liberty typical 130 o 15 nm. 45 nm no se ejecuta."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Progreso y persistencia",
+      "items": [
+        "React consulta cada 1,5 s mientras hay trabajos activos.",
+        "SQLite conserva estados; el volumen conserva reportes y logs."
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Criterios de salida",
+      "items": [
+        "Un operador sin mapear o una diferencia funcional invalida el reporte.",
+        "Reinicio: queued/running → interrupted; se crea otra evaluación."
+      ]
+    }
+  ]
+}

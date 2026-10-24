@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/home/davidgonza04/Documents/UNIVERSIDAD_2.0/asic-area-lab/docs/diagramas/especificaciones/03_COMANDOS.json",
+  "output": "/home/davidgonza04/Documents/UNIVERSIDAD_2.0/asic-area-lab/docs/diagramas/03_COMANDOS.html",
+  "specification": {
+    "sha256": "216af4047a63b1003aedbc68eb476a32e6daeb3e43883b2a90392270574010a9",
+    "bytes": 6572
+  },
+  "artifact": {
+    "sha256": "4bda3c14755d2627691c67bf25a29aa3ee78c43525d869aa3391698528933a8a",
+    "bytes": 715695
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  }
+}

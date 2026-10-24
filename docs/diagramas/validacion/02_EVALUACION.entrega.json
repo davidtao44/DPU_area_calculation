@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/home/davidgonza04/Documents/UNIVERSIDAD_2.0/asic-area-lab/docs/diagramas/especificaciones/02_EVALUACION.json",
+  "output": "/home/davidgonza04/Documents/UNIVERSIDAD_2.0/asic-area-lab/docs/diagramas/02_EVALUACION.html",
+  "specification": {
+    "sha256": "643ef398f6e2901665390ffbb40c7492bf56315766783f58d2491d3e23196783",
+    "bytes": 7625
+  },
+  "artifact": {
+    "sha256": "d928f32ed5ac08d20021a9f91b1abce78387d92de76c7d9ecd280c9df517a7f0",
+    "bytes": 720538
+  },
+  "validation": {
+    "checksPassed": 9,
+    "checkCount": 9,
+    "compositionProfile": "showcase",
+    "compositionStatus": "pass",
+    "errors": 0,
+    "warnings": 0
+  }
+}

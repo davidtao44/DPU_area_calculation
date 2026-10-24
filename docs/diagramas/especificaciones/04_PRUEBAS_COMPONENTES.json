@@ -1,0 +1,372 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Pruebas por componente y formato · guía de ampliación",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1320,
+      820
+    ],
+    "legend": {
+      "entries": {
+        "frontend": {
+          "label": "Configuración"
+        },
+        "backend": {
+          "label": "Pruebas de componente"
+        },
+        "database": {
+          "label": "Referencia numérica"
+        },
+        "security": {
+          "label": "Controles ASIC"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "componente",
+        "label": "Pruebas de componente",
+        "focus": [
+          "caso",
+          "suite",
+          "dpu",
+          "octet",
+          "tcu"
+        ],
+        "note": "Se conserva el top existente y se prueba su interfaz, estado y resultados."
+      },
+      {
+        "id": "formatos",
+        "label": "Pruebas numéricas",
+        "focus": [
+          "numerica",
+          "int",
+          "fxp",
+          "fp",
+          "posit",
+          "lns"
+        ],
+        "note": "Se elige una referencia y un codec por formato, según lo que soporta el top."
+      },
+      {
+        "id": "actual",
+        "label": "Qué está implementado",
+        "focus": [
+          "dpu",
+          "int",
+          "asic"
+        ],
+        "note": "Solo DPU INT8/16: 256 vectores RTL/netlist, 96 FF y comparación de áreas en 130/15 nm."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "int",
+      "type": "database",
+      "label": "INT",
+      "sublabel": "INT8_16 · INT16_32",
+      "tag": "Signo y overflow del RTL",
+      "pos": [
+        40,
+        50
+      ],
+      "size": [
+        210,
+        84
+      ]
+    },
+    {
+      "id": "fxp",
+      "type": "database",
+      "label": "Punto fijo",
+      "sublabel": "FXP8_16 · FXP16_32",
+      "tag": "Escala y cuantización",
+      "pos": [
+        295,
+        50
+      ],
+      "size": [
+        210,
+        84
+      ]
+    },
+    {
+      "id": "fp",
+      "type": "database",
+      "label": "Punto flotante",
+      "sublabel": "FP8 · FP16 · FP32",
+      "tag": "Redondeo y casos admitidos",
+      "pos": [
+        550,
+        50
+      ],
+      "size": [
+        210,
+        84
+      ]
+    },
+    {
+      "id": "posit",
+      "type": "database",
+      "label": "Posit",
+      "sublabel": "Posit8 · Posit16 · Posit32",
+      "tag": "Régimen, es y casos límite",
+      "pos": [
+        805,
+        50
+      ],
+      "size": [
+        210,
+        84
+      ]
+    },
+    {
+      "id": "lns",
+      "type": "database",
+      "label": "LNS",
+      "sublabel": "LNS16",
+      "tag": "Log, signo y cancelación",
+      "pos": [
+        1060,
+        50
+      ],
+      "size": [
+        210,
+        84
+      ]
+    },
+    {
+      "id": "caso",
+      "type": "frontend",
+      "label": "Definir el caso",
+      "sublabel": "Top, parámetros e interfaz",
+      "tag": "Guía propuesta; no nuevo RTL",
+      "pos": [
+        40,
+        330
+      ],
+      "size": [
+        240,
+        84
+      ]
+    },
+    {
+      "id": "suite",
+      "type": "backend",
+      "label": "Suite de componente",
+      "sublabel": "DPU · octet · TCU",
+      "tag": "Elegir estímulos y protocolo",
+      "pos": [
+        370,
+        330
+      ],
+      "size": [
+        240,
+        84
+      ]
+    },
+    {
+      "id": "numerica",
+      "type": "database",
+      "label": "Referencia por formato",
+      "sublabel": "Codec y operación del RTL",
+      "tag": "Solo modos soportados",
+      "pos": [
+        700,
+        330
+      ],
+      "size": [
+        240,
+        84
+      ]
+    },
+    {
+      "id": "asic",
+      "type": "security",
+      "label": "Validar y medir",
+      "sublabel": "RTL ↔ netlist · stat -liberty",
+      "tag": "130 nm / 15 nm",
+      "pos": [
+        1030,
+        330
+      ],
+      "size": [
+        240,
+        84
+      ]
+    },
+    {
+      "id": "dpu",
+      "type": "backend",
+      "label": "DPU + wrapper",
+      "sublabel": "Producto punto y latencia",
+      "tag": "INT8 actual; otros pendientes",
+      "pos": [
+        40,
+        610
+      ],
+      "size": [
+        240,
+        84
+      ]
+    },
+    {
+      "id": "octet",
+      "type": "backend",
+      "label": "DPU paramétrica / octet",
+      "sublabel": "Selectores, lanes y buffers",
+      "tag": "Propuesto",
+      "pos": [
+        370,
+        610
+      ],
+      "size": [
+        240,
+        84
+      ]
+    },
+    {
+      "id": "tcu",
+      "type": "backend",
+      "label": "TCU + interfaz",
+      "sublabel": "HMMA, busy/done y writeback",
+      "tag": "Propuesto por variante",
+      "pos": [
+        700,
+        610
+      ],
+      "size": [
+        240,
+        84
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Familias del repositorio · su referencia debe respetar el formato y orden de operaciones",
+      "wraps": [
+        "int",
+        "fxp",
+        "fp",
+        "posit",
+        "lns"
+      ],
+      "pad": 18
+    },
+    {
+      "kind": "region",
+      "label": "Elegir la suite según el componente existente",
+      "wraps": [
+        "dpu",
+        "octet",
+        "tcu"
+      ],
+      "pad": 18
+    }
+  ],
+  "connections": [
+    {
+      "from": "caso",
+      "to": "suite",
+      "variant": "emphasis"
+    },
+    {
+      "from": "suite",
+      "to": "numerica",
+      "label": "Modo soportado",
+      "variant": "emphasis"
+    },
+    {
+      "from": "numerica",
+      "to": "asic",
+      "label": "Vectores y codec",
+      "variant": "emphasis"
+    },
+    {
+      "from": "suite",
+      "to": "dpu",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "variant": "dashed"
+    },
+    {
+      "from": "suite",
+      "to": "octet",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "variant": "dashed"
+    },
+    {
+      "from": "suite",
+      "to": "tcu",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "variant": "dashed"
+    },
+    {
+      "from": "numerica",
+      "to": "int",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "variant": "dashed"
+    },
+    {
+      "from": "numerica",
+      "to": "fxp",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "variant": "dashed"
+    },
+    {
+      "from": "numerica",
+      "to": "fp",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "variant": "dashed"
+    },
+    {
+      "from": "numerica",
+      "to": "posit",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "variant": "dashed"
+    },
+    {
+      "from": "numerica",
+      "to": "lns",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Implementado en el piloto",
+      "items": [
+        "DPU INT8/16: 256 vectores, 96 FF y salida de 16 bits.",
+        "RTL y netlist deben coincidir con la referencia entera."
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Regla de corrección",
+      "items": [
+        "RTL y netlist: comparar bits y ciclos; una tolerancia no oculta diferencias.",
+        "Error numérico: medir aparte respecto a la referencia matemática."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "TCU y selección dinámica",
+      "items": [
+        "Probar los modos presentes en cada top sin eliminar rutas de hardware.",
+        "El área de una TCU completa no cambia al cambiar el modo ejecutado."
+      ]
+    }
+  ]
+}

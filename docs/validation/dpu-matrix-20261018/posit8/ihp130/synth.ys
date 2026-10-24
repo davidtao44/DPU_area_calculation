@@ -1,0 +1,12 @@
+read_liberty -lib cells.lib
+read_verilog design.v
+hierarchy -check -top POSIT8_DPU_perf_top
+synth -top POSIT8_DPU_perf_top -flatten -noabc
+dfflibmap -liberty cells.lib
+abc -liberty cells.lib
+delete t:$scopeinfo
+clean
+check -assert
+write_json mapped.json
+write_verilog -noattr mapped.v
+tee -o stat.json stat -liberty cells.lib -json

@@ -1,0 +1,332 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "ASIC Area Lab · Del VHDL al reporte de celdas",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "ghdl",
+        "label": "GHDL y RTL",
+        "focus": [
+          "entradas",
+          "analisis",
+          "simulacion_rtl",
+          "conversion"
+        ],
+        "note": "Se compila y valida el RTL antes de generar design.v."
+      },
+      {
+        "id": "yosys",
+        "label": "Síntesis y mapeo",
+        "focus": [
+          "lectura",
+          "generica",
+          "ff",
+          "abc",
+          "comprobacion"
+        ],
+        "note": "Yosys lee Liberty; dfflibmap y ABC aplican el mapeo tecnológico."
+      },
+      {
+        "id": "verificacion",
+        "label": "Netlist y área",
+        "focus": [
+          "comprobacion",
+          "modelos",
+          "simulacion_mapeada",
+          "reporte"
+        ],
+        "note": "Se compara la netlist con los vectores y la suma por celdas con stat -liberty."
+      }
+    ],
+    "viewBox": [
+      1310,
+      725
+    ],
+    "legend": {
+      "entries": {
+        "frontend": {
+          "label": "Cliente web"
+        },
+        "backend": {
+          "label": "Procesamiento"
+        },
+        "database": {
+          "label": "Datos"
+        },
+        "messagebus": {
+          "label": "Cola"
+        },
+        "security": {
+          "label": "Validación"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "entradas",
+      "type": "database",
+      "label": "Fuentes + biblioteca",
+      "sublabel": "VHDL INT8/16 + cells.lib",
+      "tag": "SHA-256 + versiones",
+      "pos": [
+        40,
+        70
+      ],
+      "size": [
+        240,
+        84
+      ]
+    },
+    {
+      "id": "analisis",
+      "type": "backend",
+      "label": "Analizar fuentes",
+      "sublabel": "ghdl -a --std=08",
+      "tag": "int8_16_lib + work",
+      "pos": [
+        370,
+        70
+      ],
+      "size": [
+        240,
+        84
+      ]
+    },
+    {
+      "id": "simulacion_rtl",
+      "type": "security",
+      "label": "Validar RTL",
+      "sublabel": "ghdl -e / ghdl -r",
+      "tag": "256 vectores firmados",
+      "pos": [
+        700,
+        70
+      ],
+      "size": [
+        240,
+        84
+      ]
+    },
+    {
+      "id": "conversion",
+      "type": "backend",
+      "label": "Generar Verilog",
+      "sublabel": "ghdl --synth --out=verilog",
+      "tag": "design.v",
+      "pos": [
+        1030,
+        70
+      ],
+      "size": [
+        240,
+        84
+      ]
+    },
+    {
+      "id": "lectura",
+      "type": "backend",
+      "label": "Leer diseño y Liberty",
+      "sublabel": "read_liberty · read_verilog",
+      "tag": "hierarchy -check",
+      "pos": [
+        1030,
+        300
+      ],
+      "size": [
+        240,
+        84
+      ]
+    },
+    {
+      "id": "generica",
+      "type": "backend",
+      "label": "Síntesis genérica",
+      "sublabel": "synth -flatten -noabc",
+      "tag": "ROM → lógica",
+      "pos": [
+        700,
+        300
+      ],
+      "size": [
+        240,
+        84
+      ]
+    },
+    {
+      "id": "ff",
+      "type": "backend",
+      "label": "Mapear registros",
+      "sublabel": "dfflibmap -liberty cells.lib",
+      "tag": "96 flip-flops",
+      "pos": [
+        370,
+        300
+      ],
+      "size": [
+        240,
+        84
+      ]
+    },
+    {
+      "id": "abc",
+      "type": "backend",
+      "label": "Mapear lógica",
+      "sublabel": "abc -liberty cells.lib",
+      "tag": "Celdas de la tecnología",
+      "pos": [
+        40,
+        300
+      ],
+      "size": [
+        240,
+        84
+      ]
+    },
+    {
+      "id": "comprobacion",
+      "type": "security",
+      "label": "Comprobar celdas",
+      "sublabel": "check -assert · stat -liberty",
+      "tag": "mapped.v + mapped.json",
+      "pos": [
+        40,
+        530
+      ],
+      "size": [
+        240,
+        84
+      ]
+    },
+    {
+      "id": "modelos",
+      "type": "backend",
+      "label": "Crear modelos",
+      "sublabel": "read_liberty → write_verilog",
+      "tag": "cells_sim.v",
+      "pos": [
+        370,
+        530
+      ],
+      "size": [
+        240,
+        84
+      ]
+    },
+    {
+      "id": "simulacion_mapeada",
+      "type": "security",
+      "label": "Validar netlist",
+      "sublabel": "iverilog -g2012 → vvp",
+      "tag": "Mismos 256 vectores",
+      "pos": [
+        700,
+        530
+      ],
+      "size": [
+        240,
+        84
+      ]
+    },
+    {
+      "id": "reporte",
+      "type": "database",
+      "label": "Publicar área",
+      "sublabel": "Σ cantidad × área de celda",
+      "tag": "report.json + report.csv",
+      "pos": [
+        1030,
+        530
+      ],
+      "size": [
+        240,
+        84
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "entradas",
+      "to": "analisis",
+      "variant": "emphasis"
+    },
+    {
+      "from": "analisis",
+      "to": "simulacion_rtl",
+      "variant": "emphasis"
+    },
+    {
+      "from": "simulacion_rtl",
+      "to": "conversion",
+      "variant": "emphasis"
+    },
+    {
+      "from": "conversion",
+      "to": "lectura",
+      "variant": "emphasis"
+    },
+    {
+      "from": "lectura",
+      "to": "generica",
+      "variant": "emphasis"
+    },
+    {
+      "from": "generica",
+      "to": "ff",
+      "variant": "emphasis"
+    },
+    {
+      "from": "ff",
+      "to": "abc",
+      "variant": "emphasis"
+    },
+    {
+      "from": "abc",
+      "to": "comprobacion",
+      "variant": "emphasis"
+    },
+    {
+      "from": "comprobacion",
+      "to": "modelos",
+      "variant": "emphasis"
+    },
+    {
+      "from": "modelos",
+      "to": "simulacion_mapeada",
+      "variant": "emphasis"
+    },
+    {
+      "from": "simulacion_mapeada",
+      "to": "reporte",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Entradas conservadas",
+      "items": [
+        "Top: INT8_16_DPU_perf_top, con los registros del wrapper.",
+        "Misma política de síntesis; cambia el Liberty tecnológico."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Validaciones",
+      "items": [
+        "La suma por celdas coincide con stat -liberty.",
+        "RTL y netlist pasan 256 vectores; se esperan 96 FF."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Frontera del cálculo",
+      "items": [
+        "Solo área de celdas; sin routing, pads, floorplan ni clock tree.",
+        "Sin objetivo temporal, STA ni equivalencia formal en este piloto."
+      ]
+    }
+  ]
+}

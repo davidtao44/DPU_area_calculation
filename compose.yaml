@@ -1,0 +1,24 @@
+services:
+  area-lab:
+    platform: linux/amd64
+    build:
+      context: .
+    init: true
+    ports:
+      - "8000:8000"
+    volumes:
+      - area-lab-data:/app/data
+    environment:
+      AREA_LAB_COMMAND_TIMEOUT_SECONDS: "900"
+      AREA_LAB_QUEUE_CAPACITY: "4"
+    restart: unless-stopped
+    stop_grace_period: 20m
+    mem_limit: 4g
+    cpus: 2
+    pids_limit: 128
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  area-lab-data:
+

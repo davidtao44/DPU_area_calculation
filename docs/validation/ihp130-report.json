@@ -1,0 +1,305 @@
+{
+  "total_area": 68143.8366,
+  "combinational_area": 63615.0942,
+  "sequential_area": 4528.7424,
+  "flip_flop_area": 4528.7424,
+  "latch_area": 0.0,
+  "macro_area": 0.0,
+  "total_cells": 6489,
+  "cell_counts": {
+    "combinational": 6393,
+    "flip_flop": 96,
+    "latch": 0,
+    "macro": 0
+  },
+  "cells": [
+    {
+      "name": "sg13g2_a21o_1",
+      "category": "combinational",
+      "count": 167,
+      "unit_area": 12.7008,
+      "total_area": 2121.0336
+    },
+    {
+      "name": "sg13g2_a21oi_1",
+      "category": "combinational",
+      "count": 507,
+      "unit_area": 9.072,
+      "total_area": 4599.504
+    },
+    {
+      "name": "sg13g2_a221oi_1",
+      "category": "combinational",
+      "count": 93,
+      "unit_area": 14.5152,
+      "total_area": 1349.9136
+    },
+    {
+      "name": "sg13g2_a22oi_1",
+      "category": "combinational",
+      "count": 133,
+      "unit_area": 10.8486,
+      "total_area": 1442.8638
+    },
+    {
+      "name": "sg13g2_and2_1",
+      "category": "combinational",
+      "count": 221,
+      "unit_area": 9.072,
+      "total_area": 2004.912
+    },
+    {
+      "name": "sg13g2_and3_1",
+      "category": "combinational",
+      "count": 97,
+      "unit_area": 12.7008,
+      "total_area": 1231.9776
+    },
+    {
+      "name": "sg13g2_and4_1",
+      "category": "combinational",
+      "count": 97,
+      "unit_area": 14.5152,
+      "total_area": 1407.9744
+    },
+    {
+      "name": "sg13g2_dfrbp_1",
+      "category": "flip_flop",
+      "count": 96,
+      "unit_area": 47.1744,
+      "total_area": 4528.7424
+    },
+    {
+      "name": "sg13g2_inv_1",
+      "category": "combinational",
+      "count": 134,
+      "unit_area": 5.4432,
+      "total_area": 729.3888
+    },
+    {
+      "name": "sg13g2_mux2_1",
+      "category": "combinational",
+      "count": 13,
+      "unit_area": 18.144,
+      "total_area": 235.872
+    },
+    {
+      "name": "sg13g2_nand2_1",
+      "category": "combinational",
+      "count": 511,
+      "unit_area": 7.2576,
+      "total_area": 3708.6336
+    },
+    {
+      "name": "sg13g2_nand2b_1",
+      "category": "combinational",
+      "count": 156,
+      "unit_area": 9.072,
+      "total_area": 1415.232
+    },
+    {
+      "name": "sg13g2_nand3_1",
+      "category": "combinational",
+      "count": 428,
+      "unit_area": 9.072,
+      "total_area": 3882.816
+    },
+    {
+      "name": "sg13g2_nand3b_1",
+      "category": "combinational",
+      "count": 84,
+      "unit_area": 12.7008,
+      "total_area": 1066.8672
+    },
+    {
+      "name": "sg13g2_nand4_1",
+      "category": "combinational",
+      "count": 440,
+      "unit_area": 10.8864,
+      "total_area": 4790.016
+    },
+    {
+      "name": "sg13g2_nor2_1",
+      "category": "combinational",
+      "count": 708,
+      "unit_area": 7.2576,
+      "total_area": 5138.3808
+    },
+    {
+      "name": "sg13g2_nor2b_1",
+      "category": "combinational",
+      "count": 126,
+      "unit_area": 9.072,
+      "total_area": 1143.072
+    },
+    {
+      "name": "sg13g2_nor3_1",
+      "category": "combinational",
+      "count": 545,
+      "unit_area": 9.072,
+      "total_area": 4944.24
+    },
+    {
+      "name": "sg13g2_nor4_1",
+      "category": "combinational",
+      "count": 608,
+      "unit_area": 10.8864,
+      "total_area": 6618.9312
+    },
+    {
+      "name": "sg13g2_o21ai_1",
+      "category": "combinational",
+      "count": 374,
+      "unit_area": 9.072,
+      "total_area": 3392.928
+    },
+    {
+      "name": "sg13g2_or2_1",
+      "category": "combinational",
+      "count": 229,
+      "unit_area": 9.072,
+      "total_area": 2077.488
+    },
+    {
+      "name": "sg13g2_or3_1",
+      "category": "combinational",
+      "count": 92,
+      "unit_area": 12.7008,
+      "total_area": 1168.4736
+    },
+    {
+      "name": "sg13g2_or4_1",
+      "category": "combinational",
+      "count": 346,
+      "unit_area": 14.5152,
+      "total_area": 5022.2592
+    },
+    {
+      "name": "sg13g2_xnor2_1",
+      "category": "combinational",
+      "count": 167,
+      "unit_area": 14.5152,
+      "total_area": 2424.0384
+    },
+    {
+      "name": "sg13g2_xor2_1",
+      "category": "combinational",
+      "count": 117,
+      "unit_area": 14.5152,
+      "total_area": 1698.2784
+    }
+  ],
+  "area_unit": "um2",
+  "area_unit_basis": "IHP SG13G2 standard-cell datasheet: Area in \u00b5m\u00b2.",
+  "design_id": "int8_16",
+  "numeric_format": "INT8_16",
+  "top": "INT8_16_DPU_perf_top",
+  "technology_id": "ihp130",
+  "technology_label": "IHP SG13G2",
+  "node_nm": 130,
+  "corner": "typical",
+  "voltage_v": 1.2,
+  "temperature_c": 25,
+  "duration_seconds": 21.25,
+  "validation": {
+    "rtl": "passed",
+    "mapped": "passed",
+    "vectors": 256,
+    "seed": 20261005,
+    "formal_equivalence": "not_run",
+    "timing_analysis": "not_run"
+  },
+  "manifest": {
+    "schema_version": 1,
+    "experiment_id": "ec16ca1c-544a-4e70-a55d-dcaeeae04dce",
+    "design": {
+      "id": "int8_16",
+      "label": "DPU INT8 / acumulaci\u00f3n INT16",
+      "numeric_format": "INT8_16",
+      "top": "INT8_16_DPU_perf_top",
+      "source_files": [
+        "rtl/int8_16/INT8_Mult.vhd",
+        "rtl/int8_16/INT8_Adder.vhd",
+        "rtl/int8_16/INT8_DPU.vhd"
+      ],
+      "wrapper_file": "rtl/int8_16/INT8_16_DPU_perf_top.vhd",
+      "declared_register_bits": 96
+    },
+    "technology": {
+      "id": "ihp130",
+      "label": "IHP SG13G2",
+      "node_nm": 130,
+      "corner": "typical",
+      "voltage_v": 1.2,
+      "temperature_c": 25,
+      "liberty_file": "libraries/ihp130/cells.lib",
+      "available": true,
+      "reason": null,
+      "area_unit": "um2",
+      "unit_basis": "IHP SG13G2 standard-cell datasheet: Area in \u00b5m\u00b2."
+    },
+    "source_sha256": {
+      "rtl/int8_16/INT8_Mult.vhd": "00580f3b02e4d9f68afb7ab69e6195860e307ea3f56b6f3189347f50f7ba6de4",
+      "rtl/int8_16/INT8_Adder.vhd": "8df7e98c29bd94df00677627d7be99e2e147d869e093d1323c498f8f2fda345f",
+      "rtl/int8_16/INT8_DPU.vhd": "7e51fabb54c97c5bb4c8b01ec5134b17db48a0dbf126f3806822f35692ea7bd5",
+      "rtl/int8_16/INT8_16_DPU_perf_top.vhd": "b3173d3adc784fd29701950fe85a81df43f338508359d860802b0ddf05d1ad01"
+    },
+    "liberty_sha256": "fe04935bafe2acfbbad808695c6b1511c3f2550d37a4d0cc23f776ff1763bb1b",
+    "tool_versions": {
+      "ghdl": "GHDL 7.0.0-dev (6.0.0.r485.gfc6fddc30.dirty) [Dunoon edition]",
+      "yosys": "Yosys 0.68+182 (git sha1 0bf55a858-dirty, Release, Clang /usr/bin/clang++ 21.1.8)",
+      "iverilog": "Icarus Verilog version 14.0 (devel) (s20260301-394-g9edaf7b6a-dirty)"
+    },
+    "scope": "standard_cell_area_only",
+    "mapping_policy": "Yosys synth -noabc; dfflibmap; ABC default Liberty mapping; no timing target",
+    "memory_policy": "ROM lowered to combinational logic; no SRAM macros",
+    "functional_test": {
+      "seed": 20261005,
+      "arithmetic": "signed INT8 dot product modulo 2^16"
+    },
+    "excluded": [
+      "routing",
+      "wire_area",
+      "placement",
+      "floorplan",
+      "pads",
+      "clock_tree"
+    ],
+    "asset_snapshot": {
+      "repository_commit": "e677293903571c824430bb35a246f295486eea33",
+      "files": [
+        {
+          "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/int8_16/needed_flopoco_files/INT8_Mult.vhd",
+          "snapshot": "rtl/int8_16/INT8_Mult.vhd",
+          "sha256": "00580f3b02e4d9f68afb7ab69e6195860e307ea3f56b6f3189347f50f7ba6de4"
+        },
+        {
+          "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/int8_16/needed_flopoco_files/INT8_Adder.vhd",
+          "snapshot": "rtl/int8_16/INT8_Adder.vhd",
+          "sha256": "8df7e98c29bd94df00677627d7be99e2e147d869e093d1323c498f8f2fda345f"
+        },
+        {
+          "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/int8_16/INT8_DPU.vhd",
+          "snapshot": "rtl/int8_16/INT8_DPU.vhd",
+          "sha256": "7e51fabb54c97c5bb4c8b01ec5134b17db48a0dbf126f3806822f35692ea7bd5"
+        },
+        {
+          "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/wrappers/INT8_16_DPU_perf_top.vhd",
+          "snapshot": "rtl/int8_16/INT8_16_DPU_perf_top.vhd",
+          "sha256": "b3173d3adc784fd29701950fe85a81df43f338508359d860802b0ddf05d1ad01"
+        },
+        {
+          "original": "syn_libraries/130nm/lib/sg13g2_stdcell_typ_1p20V_25C.lib",
+          "snapshot": "libraries/ihp130/cells.lib",
+          "sha256": "fe04935bafe2acfbbad808695c6b1511c3f2550d37a4d0cc23f776ff1763bb1b"
+        },
+        {
+          "original": "syn_libraries/15nm/NLDM/NanGate_15nm_OCL_typical_conditional_nldm.lib",
+          "snapshot": "libraries/nangate15/cells.lib",
+          "sha256": "095358eae5326b9ab5530b42b9835e190df7bf2d35bdd136b05940bfff01dfc3"
+        }
+      ],
+      "note": "Hashes identify exact source bytes even if the repository has local changes."
+    }
+  }
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "name": "01_ARQUITECTURA",
+    "source_html_sha256": "ed15289671db153896c3fc83c79e66f7e17c14790080c5202b0ca9aedf0ea649",
+    "svg_sha256": "e5e2c58ebeee2c54fe9790e9ce682c7d92e760791fa5874ef6c46d0d83c24666",
+    "kind": "static-svg-export",
+    "theme": "light",
+    "browser_screenshot": false,
+    "rasterizer": "rsvg-convert",
+    "width": 1600
+  },
+  {
+    "name": "02_EVALUACION",
+    "source_html_sha256": "d928f32ed5ac08d20021a9f91b1abce78387d92de76c7d9ecd280c9df517a7f0",
+    "svg_sha256": "bb5b97496d02a01bea8d804b16b29486db4ed44bdb46f5a5db98dab9f5a41a86",
+    "kind": "static-svg-export",
+    "theme": "light",
+    "browser_screenshot": false,
+    "rasterizer": "rsvg-convert",
+    "width": 1600
+  },
+  {
+    "name": "03_COMANDOS",
+    "source_html_sha256": "4bda3c14755d2627691c67bf25a29aa3ee78c43525d869aa3391698528933a8a",
+    "svg_sha256": "960643eb5afbffb43f43c54e59477e166259bdaefc48c2bc783b31bc7cd3d58c",
+    "kind": "static-svg-export",
+    "theme": "light",
+    "browser_screenshot": false,
+    "rasterizer": "rsvg-convert",
+    "width": 1600
+  },
+  {
+    "name": "04_PRUEBAS_COMPONENTES",
+    "source_html_sha256": "497534e82edd3c80f35d9a12a219742cd5bc9bcd24ecbb0b3e79886f56cce93a",
+    "svg_sha256": "0dd79f0d4f210f5eb514723779defa4e41b2538f3b2ba98f605983d7a80e719f",
+    "kind": "static-svg-export",
+    "theme": "light",
+    "browser_screenshot": false,
+    "rasterizer": "rsvg-convert",
+    "width": 1600
+  }
+]

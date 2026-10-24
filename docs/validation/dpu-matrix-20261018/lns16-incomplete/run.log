@@ -1,0 +1,66 @@
+
+$ /home/davidgonza04/tools/oss-cad-suite/bin/ghdl -a --std=08 -fsynopsys -fexplicit --work=lns16_lib sources/rtl/lns16/needed_flopoco_files/LNSSubCorrectionPkg.vhd sources/rtl/lns16/needed_flopoco_files/LNSMul_4_9_comb.vhd sources/rtl/lns16/needed_flopoco_files/LNSAddSub_4_9_comb.vhd sources/rtl/lns16/LNS16_4_9_DPU.vhd
+sources/rtl/lns16/needed_flopoco_files/LNSAddSub_4_9_comb.vhd:2051:54:warning: NUMERIC_STD.TO_SIGNED: vector truncated
+   IsEssZero <= '1' when signed(Z(wE+wF downto j)) < to_signed(DB_Max_Input, wE + wF - j + 1) else '0';
+                                                     ^
+[exit=0; elapsed=3.222s]
+
+$ /home/davidgonza04/tools/oss-cad-suite/bin/ghdl -a --std=08 -fsynopsys -fexplicit sources/rtl/lns16/LNS16_DPU_perf_top.vhd
+[exit=0; elapsed=0.115s]
+
+$ /home/davidgonza04/tools/oss-cad-suite/bin/ghdl -a --std=08 -fsynopsys -fexplicit validation_tb.vhd
+[exit=0; elapsed=0.115s]
+
+$ /home/davidgonza04/tools/oss-cad-suite/bin/ghdl -e --std=08 -fsynopsys -fexplicit area_validation_tb
+sources/rtl/lns16/needed_flopoco_files/LNSAddSub_4_9_comb.vhd:2051:54:warning: NUMERIC_STD.TO_SIGNED: vector truncated
+   IsEssZero <= '1' when signed(Z(wE+wF downto j)) < to_signed(DB_Max_Input, wE + wF - j + 1) else '0';
+                                                     ^
+[exit=0; elapsed=0.365s]
+
+$ /home/davidgonza04/tools/oss-cad-suite/bin/ghdl -r --std=08 -fsynopsys -fexplicit area_validation_tb --assert-level=error --ieee-asserts=disable-at-0
+../../src/ieee2008/numeric_std-body.vhdl:1668:7:@5ns:(assertion warning): NUMERIC_STD.">=": metavalue detected, returning FALSE
+validation_tb.vhd:36:5:@5120ns:(report note): VALIDATION_OK 256
+simulation stopped @5120ns
+[exit=0; elapsed=0.966s]
+
+$ /home/davidgonza04/tools/oss-cad-suite/bin/ghdl --synth --std=08 -fsynopsys -fexplicit --out=verilog LNS16_DPU_perf_top
+sources/rtl/lns16/needed_flopoco_files/LNSAddSub_4_9_comb.vhd:2051:54:warning: NUMERIC_STD.TO_SIGNED: vector truncated
+   IsEssZero <= '1' when signed(Z(wE+wF downto j)) < to_signed(DB_Max_Input, wE + wF - j + 1) else '0';
+                                                     ^
+sources/rtl/lns16/needed_flopoco_files/LNSAddSub_4_9_comb.vhd:1848:47:warning: comparing non-numeric vector is unexpected
+   IsEssZero <= '1' when Z(K+F downto wBreak) < DB_Max_Input(K+F downto wBreak) else '0';
+                                              ^
+sources/rtl/lns16/needed_flopoco_files/LNSAddSub_4_9_comb.vhd:104:16:warning: signal "rom" is never assigned [-Wnowrite]
+        signal rom : memory_t := init_rom;
+               ^
+sources/rtl/lns16/needed_flopoco_files/LNSAddSub_4_9_comb.vhd:104:16:note: found ROM "rom", width: 14 bits, depth: 128
+        signal rom : memory_t := init_rom;
+               ^
+sources/rtl/lns16/needed_flopoco_files/LNSAddSub_4_9_comb.vhd:229:16:warning: signal "rom" is never assigned [-Wnowrite]
+        signal rom : memory_t := init_rom;
+               ^
+sources/rtl/lns16/needed_flopoco_files/LNSAddSub_4_9_comb.vhd:229:16:note: found ROM "rom", width: 10 bits, depth: 256
+        signal rom : memory_t := init_rom;
+               ^
+sources/rtl/lns16/needed_flopoco_files/LNSAddSub_4_9_comb.vhd:518:16:warning: signal "rom" is never assigned [-Wnowrite]
+        signal rom : memory_t := init_rom;
+               ^
+sources/rtl/lns16/needed_flopoco_files/LNSAddSub_4_9_comb.vhd:518:16:note: found ROM "rom", width: 11 bits, depth: 256
+        signal rom : memory_t := init_rom;
+               ^
+sources/rtl/lns16/needed_flopoco_files/LNSAddSub_4_9_comb.vhd:1012:16:warning: signal "rom" is never assigned [-Wnowrite]
+        signal rom : memory_t := init_rom;
+               ^
+sources/rtl/lns16/needed_flopoco_files/LNSAddSub_4_9_comb.vhd:1012:16:note: found ROM "rom", width: 15 bits, depth: 256
+        signal rom : memory_t := init_rom;
+               ^
+sources/rtl/lns16/needed_flopoco_files/LNSAddSub_4_9_comb.vhd:1508:16:warning: signal "rom" is never assigned [-Wnowrite]
+        signal rom : memory_t := init_rom;
+               ^
+sources/rtl/lns16/needed_flopoco_files/LNSAddSub_4_9_comb.vhd:1508:16:note: found ROM "rom", width: 21 bits, depth: 256
+        signal rom : memory_t := init_rom;
+               ^
+[stdout guardado en design.v]
+[exit=0; elapsed=10.461s]
+
+$ /home/davidgonza04/tools/oss-cad-suite/bin/yosys -s synth.ys

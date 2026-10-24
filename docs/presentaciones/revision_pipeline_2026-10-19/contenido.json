@@ -1,0 +1,1407 @@
+{
+  "title": "Revisión técnica del pipeline ASIC · GIRA",
+  "date": "2026-10-19",
+  "slides": [
+    {
+      "title": "Del VHDL al área ASIC: qué medimos y qué podemos demostrar",
+      "section": "Revisión técnica · GIRA",
+      "type": "cover",
+      "notes": "Esta presentación describe el programa tal como existe al 19 de octubre de 2026. Su objetivo es someter el método y las evidencias a revisión, no defender una certeza absoluta. Se volvió a auditar el archivo conservado de 30 combinaciones, sin ejecutar nuevas síntesis. Los diagramas representan módulos y comandos reales. El argumento defendible es que se obtiene una estimación prelayout de área de celdas de una implementación registrada concreta. La corrección física final, la equivalencia exhaustiva y la precisión matemática de todas las familias siguen fuera de lo demostrado.",
+      "refs": [],
+      "local": "",
+      "subtitle": "Código, arquitectura, bibliotecas, comandos y evidencia verificable",
+      "chips": [
+        "11 DPU integradas",
+        "3 bibliotecas typical",
+        "30 casos documentados"
+      ],
+      "takeaway": "Una medición delimitada y trazable; una conclusión con límites explícitos."
+    },
+    {
+      "title": "La base metodológica es defendible; la validación sigue siendo parcial",
+      "section": "01 · Dictamen de la revisión",
+      "type": "cards",
+      "notes": "La auditoría realizada hoy recalcula sumas y hashes de los archivos conservados. No es una nueva ejecución de GHDL o Yosys. Los 30 casos corresponden a diez diseños por tres tecnologías. LNS16 figura en el catálogo, pero no tiene tres reportes completos. Las pruebas ligeras de software pasaron hoy:20 backend y 42 frontend. Es razonable aceptar la metodología como estudio exploratorio de área de celdas, condicionando la publicación de conclusiones fuertes a completar la cadena de artefactos y delimitar la exactitud funcional.",
+      "refs": [],
+      "local": "auditoria_evidencias.json · pruebas ligeras 19/10/2026",
+      "cards": [
+        [
+          "Coherencia comprobada",
+          "30 reportes: conteos, áreas, hashes, vectores y logs compatibles."
+        ],
+        [
+          "Pendientes reales",
+          "LNS16: tres mapeos sin cerrar. No existe certificación física ni prueba formal."
+        ],
+        [
+          "Decisión propuesta",
+          "Aceptar el método para área de celdas y cerrar las brechas antes de ampliar las afirmaciones."
+        ]
+      ],
+      "takeaway": "No se concluye que todo el sistema esté validado exhaustivamente."
+    },
+    {
+      "title": "La magnitud de interés es la suma de áreas de las celdas mapeadas",
+      "section": "02 · Alcance",
+      "type": "scope",
+      "notes": "Área de celdas significa sumar las áreas nominales de los tipos de celdas que aparecen en la netlist. Se incluyen los FF del wrapper registrado. Las conexiones lógicas son indispensables para definir el circuito, aunque se excluya el área física de los cables. No se realiza placement ni routing; por tanto no existe evidencia sobre utilización, congestión, die o cierre temporal. El resultado se refiere a esta netlist bajo esta biblioteca y esta política de mapeo, no al menor circuito posible ni al tamaño final de un chip.",
+      "refs": [
+        "F04",
+        "F06"
+      ],
+      "local": "infrastructure/liberty.py · summarize_netlist()",
+      "formula": "A celdas = Σ [ número de instancias × área de su tipo ]",
+      "left": [
+        "Lógica combinacional",
+        "Flip-flops del wrapper",
+        "ROM reducida a lógica"
+      ],
+      "right": [
+        "Área de cables y routing",
+        "Core, pads, die y clock tree",
+        "Potencia, frecuencia y STA"
+      ],
+      "takeaway": "El área física de las conexiones se excluye; las conexiones lógicas se conservan."
+    },
+    {
+      "title": "El objeto medido son once DPU registradas ya existentes",
+      "section": "03 · Código de origen",
+      "type": "table",
+      "notes": "Los perfiles se obtuvieron del subproyecto DPU_Performance_Area_Comparison. No son nuevas arquitecturas inventadas para la presentación. Cada top tiene su wrapper original y anchos concretos. DPU designa aquí cuatro productos y acumulación, con las particularidades de cada implementación. La aplicación actual no integra octets ni TCU completas. La descripción de la jerarquía más amplia del repositorio no debe confundirse con el alcance realmente ejecutable.",
+      "refs": [],
+      "local": "infrastructure/designs.py · assets/manifest.json",
+      "headers": [
+        "Perfil",
+        "A/B",
+        "C/R",
+        "Registros declarados",
+        "Particularidad"
+      ],
+      "rows": [
+        [
+          "int8_16",
+          "8",
+          "16",
+          "96",
+          "Referencia entera"
+        ],
+        [
+          "int16_32",
+          "16",
+          "32",
+          "192",
+          "Referencia entera"
+        ],
+        [
+          "fxp8_16",
+          "8",
+          "16",
+          "96",
+          "MAC del RTL"
+        ],
+        [
+          "fxp16_32",
+          "16",
+          "32",
+          "192",
+          "MAC del RTL"
+        ],
+        [
+          "fp8",
+          "8",
+          "8",
+          "80",
+          "FMA del RTL"
+        ],
+        [
+          "fp16",
+          "16",
+          "16",
+          "160",
+          "FMA del RTL"
+        ],
+        [
+          "fp32",
+          "32",
+          "32",
+          "320",
+          "FMA del RTL"
+        ],
+        [
+          "posit8",
+          "8",
+          "8",
+          "80",
+          "es=0"
+        ],
+        [
+          "posit16",
+          "16",
+          "16",
+          "160",
+          "es=1; nombre histórico _0"
+        ],
+        [
+          "posit32",
+          "32",
+          "32",
+          "320",
+          "es=2"
+        ],
+        [
+          "lns16",
+          "16",
+          "16",
+          "160",
+          "ROM de corrección"
+        ]
+      ],
+      "widths": [
+        2.15,
+        0.8,
+        0.8,
+        2.8,
+        4.7
+      ],
+      "dense": true,
+      "takeaway": "Los bits declarados no se convierten automáticamente en un número fijo de FF mapeados."
+    },
+    {
+      "title": "El wrapper establece la frontera de área y la latencia observable",
+      "section": "04 · Circuito medido",
+      "type": "flow",
+      "notes": "En INT8/16 hay ocho operandos de 8 bits y un acumulador de 16 bits registrados:80 bits de entrada. Se añade un registro de salida de 16 bits, para96 bits declarados. La lógica de la DPU se conserva. Los valores de 96 FF en INT8 y192 FF en INT16 son controles estrictos del perfil; otras familias permiten optimizaciones de bits no observables, siempre que quede estado y pase la comparación funcional. Dos flancos permiten capturar entradas y después la salida correspondiente, sin que ello imponga una frecuencia realizable.",
+      "refs": [],
+      "local": "assets/rtl/int8_16/INT8_16_DPU_perf_top.vhd · validation.py",
+      "steps": [
+        [
+          "80 bits de entrada",
+          "A0…A3, B0…B3 y C0"
+        ],
+        [
+          "DPU combinacional",
+          "4 productos + acumulación"
+        ],
+        [
+          "16 bits de salida",
+          "R_out registrado"
+        ]
+      ],
+      "formula": "INT8/16: 8 × 8 + 2 × 16 = 96 bits declarados",
+      "takeaway": "Se mide la DPU con su wrapper; no solo la expresión aritmética."
+    },
+    {
+      "title": "Diseño y tecnología se eligen antes de crear el trabajo",
+      "section": "05 · Selección del experimento",
+      "type": "flow",
+      "notes": "El usuario selecciona un design_id que ya determina formato, top, anchos, archivos y biblioteca VHDL. No se cambia un parámetro de formato dentro del mismo hardware después de sintetizar. El technology_id selecciona un Liberty específico. La API acepta únicamente IDs enumerados y rechaza campos arbitrarios; por tanto el navegador no envía un comando de shell ni una ruta para ejecutar. La solicitud crea un UUID y devuelve202. Los resultados llegan por consulta posterior.",
+      "refs": [
+        "F13",
+        "F14"
+      ],
+      "local": "ExperimentForm.tsx · api/schemas.py · ExperimentService.submit()",
+      "steps": [
+        [
+          "Diseño / formato",
+          "Ejemplo: int8_16"
+        ],
+        [
+          "Tecnología / Liberty",
+          "Ejemplo: nangate45"
+        ],
+        [
+          "POST /experiments",
+          "UUID + estado queued"
+        ]
+      ],
+      "code": "POST /api/v1/experiments\n{\"design_id\":\"int8_16\",\"technology_id\":\"nangate45\"}",
+      "takeaway": "Un experimento combina un top y un Liberty; no ejecuta todo el barrido automáticamente."
+    },
+    {
+      "title": "Las tres bibliotecas activas corresponden a condiciones typical",
+      "section": "06 · Tecnología y condiciones",
+      "type": "table",
+      "notes": "Se contrastaron el catálogo, el manifiesto de assets y los campos nominales de cada archivo. Los tres snapshots son copias idénticas a los originales por SHA-256. En IHP se usa1.20V; la otra biblioteca typical de 1.50V no es la seleccionada. Nangate45 usa el paquete base, Front_End/Liberty/NLDM, no Low_Power ni un binario .db. Las condiciones nominales son distintas entre nodos: same typical no significa mismo proceso ni misma tensión física.",
+      "refs": [
+        "F08",
+        "F09",
+        "F10"
+      ],
+      "local": "infrastructure/catalog.py · scripts/prepare_assets.py",
+      "headers": [
+        "ID / nodo",
+        "Voltaje",
+        "Temperatura",
+        "Archivo Liberty activo"
+      ],
+      "rows": [
+        [
+          "ihp130 · 130 nm",
+          "1,20 V",
+          "25 °C",
+          "sg13g2_stdcell_typ_1p20V_25C.lib"
+        ],
+        [
+          "nangate45 · 45 nm",
+          "1,10 V",
+          "25 °C",
+          "NangateOpenCellLibrary_typical.lib"
+        ],
+        [
+          "nangate15 · 15 nm",
+          "0,80 V",
+          "25 °C",
+          "NanGate_15nm_OCL_typical_conditional_nldm.lib"
+        ]
+      ],
+      "widths": [
+        2.1,
+        1.35,
+        1.55,
+        6.25
+      ],
+      "takeaway": "Sí: todos los experimentos documentados usan los typical seleccionados."
+    },
+    {
+      "title": "Un proceso real y un kit predictivo sostienen conclusiones distintas",
+      "section": "07 · Qué representa cada biblioteca",
+      "type": "cards",
+      "notes": "La fuente de una biblioteca importa tanto como su nodo. IHP130 está vinculado al proceso SG13G2, pero el PDK abierto se publica como preview y el programa no hace un tape-out. FreePDK45 y FreePDK15 son plataformas genéricas predictivas de investigación, apropiadas para estudiar implementaciones bajo esas reglas y celdas. No son una promesa de área de un proceso comercial arbitrario llamado45 o15nm. El nombre de nodo tampoco permite extrapolar por el cuadrado de la longitud.",
+      "refs": [
+        "F08",
+        "F09",
+        "F10"
+      ],
+      "local": "",
+      "cards": [
+        [
+          "IHP SG13G2 · 130 nm",
+          "Deriva de un proceso fabricado. El PDK abierto figura como preview."
+        ],
+        [
+          "Nangate / FreePDK45",
+          "Biblioteca de referencia sobre un proceso genérico predictivo de investigación."
+        ],
+        [
+          "Nangate / FreePDK15",
+          "Referencia predictiva FinFET; no equivale a cualquier nodo comercial de 15 nm."
+        ]
+      ],
+      "takeaway": "La conclusión válida nombra la biblioteca exacta, su corner y su procedencia."
+    },
+    {
+      "title": "El inventario suministrado es mayor que el catálogo habilitado",
+      "section": "08 · Matriz experimental",
+      "type": "cards",
+      "notes": "El Excel elaborado previamente separa33 combinaciones habilitadas de 121propuestas. Existen14Liberty NLDM base: seisIHP, cincoNangate45 y tresNangate15. Solo tres son los snapshots activos. Los otros once requieren crear perfiles y revisar simulación y mapeo. Hay53 archivos .lib de inventario, excluyendo metadatos Apple. CCS/ECSM y Low_Power se listan, pero no se cuentan automáticamente como estudios físicos independientes ni se mezclan con el paquete base.",
+      "refs": [],
+      "local": "docs/experimentos/Plan_experimentos_DPU_ASIC_2026-10-19.xlsx",
+      "cards": [
+        [
+          "33 actuales",
+          "11 diseños × 3 Liberty activos; todos typical."
+        ],
+        [
+          "121 propuestas",
+          "11 diseños × 11 Liberty NLDM base adicionales, sin integrar."
+        ],
+        [
+          "53 archivos inventariados",
+          "NLDM, CCS, ECSM y funcionales; se excluyen ._* de Apple."
+        ]
+      ],
+      "takeaway": "Tener un archivo en syn_libraries no lo habilita automáticamente en la API."
+    },
+    {
+      "title": "La aplicación separa decisiones de dominio de herramientas externas",
+      "section": "09 · Arquitectura limpia",
+      "type": "architecture",
+      "notes": "ExperimentService depende de dos protocolos del dominio: ExperimentRepository y SynthesisGateway. Los adaptadores concretos SQLiteExperimentRepository y Ghdl YosysSynthesis implementan esas fronteras. create_app es la raíz de composición. FastAPI expone el caso de uso; React consume contratos JSON; el dominio no importa FastAPI ni SQLite. El adaptador de síntesis orquesta herramientas y recoge reportes. Esta separación mejora la trazabilidad y permite probar fallos con un gateway simulado, pero por sí sola no demuestra la validez científica del área.",
+      "refs": [],
+      "local": "domain/ports.py · application/services.py · main.py",
+      "takeaway": "El frontend representa datos; el cálculo está en los adaptadores EDA y Liberty."
+    },
+    {
+      "title": "Un solo contenedor reúne API, frontend compilado y herramientas EDA",
+      "section": "10 · Ejecución y persistencia",
+      "type": "flow",
+      "notes": "La construcción tiene tres etapas: Node compila React/Vite; una etapa descarga la suite EDA fijada y verifica su SHA; el runtime PythonTrixie recibe ambos resultados. FastAPI sirve el frontend de producción. SQLite está embebido y no hay un servidor PostgreSQL adicional. El volumen /app/data conserva la base y las carpetas runs. Vite no es un servicio extra de producción. El acceso a Docker quedó bloqueado en esta sesión; no se usa la existencia del Dockerfile como evidencia de un build reciente exitoso.",
+      "refs": [
+        "F12",
+        "F15",
+        "F16",
+        "F17"
+      ],
+      "local": "Dockerfile · compose.yaml · main.py",
+      "steps": [
+        [
+          "Node + Vite",
+          "Construye frontend/dist"
+        ],
+        [
+          "OSS CAD Suite",
+          "Release y SHA fijados"
+        ],
+        [
+          "Python + FastAPI",
+          "Sirve UI, API y worker"
+        ]
+      ],
+      "formula": "Volumen /app/data = experiments.sqlite3 + runs/<UUID>/",
+      "takeaway": "Un contenedor; SQLite embebido; un worker EDA. No se necesita PostgreSQL para este alcance."
+    },
+    {
+      "title": "El trabajo avanza por estados y publica el área al terminar los controles",
+      "section": "11 · Ciclo de vida",
+      "type": "flow",
+      "notes": "La cola admite cuatro pendientes y un worker ejecuta trabajos mediante asyncio.to_thread, de modo que las herramientas no bloquean el loop HTTP. Los estados de progreso van de preparing a reporting. Un error genera failed y conserva el diagnóstico. Al reiniciar, los registros queued o running se marcan interrupted y no se reanudan automáticamente. La API de CSV exige succeeded. Las pruebas de aceptación de API usan un gateway falso para probar el flujo de estados; no se cuentan como síntesis reales.",
+      "refs": [],
+      "local": "ExperimentService.work() / _execute() · sqlite_repository.py · api/routes.py",
+      "steps": [
+        [
+          "queued",
+          "UUID persistido"
+        ],
+        [
+          "running",
+          "Validación + síntesis"
+        ],
+        [
+          "succeeded / failed",
+          "Reporte o diagnóstico"
+        ]
+      ],
+      "code": "preparing → analyzing → validating_rtl → converting\n→ mapping → checking → validating_mapped → reporting",
+      "takeaway": "Un exit code correcto de una herramienta no basta para publicar un reporte válido."
+    },
+    {
+      "title": "Una ejecución conecta entradas, referencia RTL, mapeo y reporte",
+      "section": "11B · Pipeline completo",
+      "type": "pipeline",
+      "refs": [
+        "F01",
+        "F02",
+        "F04",
+        "F07"
+      ],
+      "local": "GhdlYosysSynthesis.run() · validation.py · liberty.py",
+      "notes": "Este diagrama resume una ejecución real. Se elige perfil y Liberty, se copian y registran entradas, y GHDL simula el RTL para producir la referencia. Luego se convierte a Verilog, se sintetiza y mapea en Yosys, y se obtiene la netlist. Se comprueban conteos y áreas con Liberty y stat antes de simular la netlist contra la referencia RTL. Solo después se publica el reporte. La flecha de referencia es un flujo de datos adicional, no otra fase de síntesis. Cualquier fallo detiene la publicación de área válida. Las fuentes y dependencias son locales a un UUID; no se sustituye ningún resultado faltante por una estimación inventada.",
+      "takeaway": "El reporte se publica tras comprobar estructura, cuenta y comportamiento en los estímulos seleccionados."
+    },
+    {
+      "title": "El perfil del diseño evita seleccionar archivos o anchos a mano",
+      "section": "12 · Datos que gobiernan el pipeline",
+      "type": "code",
+      "notes": "El perfil contiene todos los parámetros variables que el adaptador necesita. El mismo registro también gobierna la preparación de assets, reduciendo el riesgo de divergencia. Estos son campos reales del perfil INT8, resumidos para la diapositiva. source_files se mantiene ordenado y relativo a assets. Un design_id también define su referencia funcional. No hay un selector libre de nombres de entidad, ni se infiere el formato por analizar un archivo con un patrón genérico.",
+      "refs": [],
+      "local": "infrastructure/designs.py · domain/models.py",
+      "code": "id=\"int8_16\"\ntop=\"INT8_16_DPU_perf_top\"\nlibrary=\"int8_16_lib\"\noperand_bits=8; result_bits=16\ndeclared_register_bits=96\nreference=\"signed_dot_modulo\"\nexpected_flip_flops=96\ncompilation=\"files\"",
+      "explanation": "Un único perfil determina:\n\n• El RTL y el wrapper.\n• El orden de análisis.\n• Los anchos del testbench.\n• El control de registros.\n• La referencia funcional.",
+      "takeaway": "El programa mide variantes revisadas del repositorio; no cualquier VHDL arbitrario."
+    },
+    {
+      "title": "Cada ejecución conserva la identidad de sus entradas",
+      "section": "13 · Procedencia y hashes",
+      "type": "flow",
+      "notes": "prepare_assets copia bytes del subrepositorio y Liberty originales sin reescribirlos. El manifiesto de assets incluye commit y hashes; el propio manifiesto advierte que el commit no sustituye al hash si hay cambios locales. Cada run vuelve a copiar los archivos a sources y el Liberty a cells.lib. El manifiesto del experimento añade versiones y hashes de estímulos y resultados. Un SHA identifica bytes y detecta diferencias con una referencia retenida; no constituye firma de una tercera parte ni prueba de que nadie haya modificado toda la cadena.",
+      "refs": [],
+      "local": "prepare_assets.py · synthesis.py · manifest.json",
+      "steps": [
+        [
+          "Originales",
+          "RTL + Liberty suministrados"
+        ],
+        [
+          "assets/",
+          "Snapshots y SHA-256"
+        ],
+        [
+          "runs/<UUID>/",
+          "Entradas y manifiesto del caso"
+        ]
+      ],
+      "formula": "Auditoría actual: 44 archivos originales ↔ snapshots, hashes coincidentes",
+      "takeaway": "La trazabilidad explica qué se midió; no prueba por sí sola que el RTL sea correcto."
+    },
+    {
+      "title": "GHDL analiza las dependencias y el wrapper en bibliotecas separadas",
+      "section": "14 · Preparación VHDL",
+      "type": "code",
+      "notes": "GHDL es una herramienta de análisis, elaboración y simulación VHDL que también ofrece síntesis. En este programa es un ejecutable, no una librería Python ni un servidor aparte. El adaptador ejecuta el análisis de fuentes en la biblioteca del perfil y el wrapper en work, de acuerdo con sus declaraciones library/use. Las opciones std=08, fsynopsys y fexplicit son las realmente usadas para este RTL. Una mala dependencia falla antes de medir área. La conversión de síntesis es otra llamada posterior.",
+      "refs": [
+        "F01"
+      ],
+      "local": "infrastructure/vhdl.py · synthesis.py",
+      "code": "ghdl -a --std=08 -fsynopsys -fexplicit \\\n  --work=int8_16_lib <fuentes ordenadas>\n\nghdl -a --std=08 -fsynopsys -fexplicit \\\n  sources/rtl/int8_16/INT8_16_DPU_perf_top.vhd",
+      "explanation": "Primero: operadores y DPU.\n\nDespués: wrapper en work.\n\nCada caso usa su carpeta y sus bibliotecas compiladas.\n\nLas rutas completas quedan en run.log.",
+      "takeaway": "Los comandos se muestran para INT8; las fuentes se sustituyen por las del perfil elegido."
+    },
+    {
+      "title": "Posit16 y Posit32 requieren resolver helpers duplicados sin alterar su RTL",
+      "section": "15 · Caso especial de compilación",
+      "type": "flow",
+      "notes": "El backend LLVM de GHDL genera objetos por archivo. Los archivos FloPoCo de suma y multiplicación repiten helpers, lo que producía símbolos duplicados al enlazar la simulación nativa. La infraestructura usa el parser ghdl --chop para separar unidades. Si dos unidades con el mismo nombre son idénticas byte a byte, se conserva una copia; si difieren, se falla. No se usa una opción de linker que oculte conflictos y los snapshots originales se conservan. Las seis ejecuciones Posit16/32 completas documentan esta política y sus unidades derivadas.",
+      "refs": [],
+      "local": "infrastructure/vhdl.py · compilation/*.vhdl · manifiestos Posit16/32",
+      "steps": [
+        [
+          "Suma + multiplicación",
+          "Contienen helpers repetidos"
+        ],
+        [
+          "ghdl --chop",
+          "Unidades con nombre y hash"
+        ],
+        [
+          "Comparar y analizar",
+          "Solo reutilizar bytes idénticos"
+        ]
+      ],
+      "formula": "Mismo nombre + contenido distinto → PipelineFailure",
+      "takeaway": "Posit16 usa es=1 según sus operadores, aunque sus archivos se llamen posit16_0_*."
+    },
+    {
+      "title": "El RTL produce la referencia y los enteros tienen un oráculo adicional",
+      "section": "16 · Estímulos y significado de la prueba",
+      "type": "cards",
+      "notes": "write_vectors genera 256 estímulos con semilla 20261005. Se incluyen extremos, signos, actividad por lane y palabras aleatorias. GHDL debe producir 256 resultados definidos. Para INT8 e INT16 Python comprueba además un producto punto con signo, reducido módulo 2^bits(R). Para FXP, FP, Posit y LNS, el esperado sale del RTL suministrado: la prueba verifica preservación del comportamiento, no demuestra que la aritmética original coincida con una matemática ideal. Los formatos no se reinterpretan usando floats de Python.",
+      "refs": [],
+      "local": "validation.py · write_vectors() / check_rtl_results()",
+      "cards": [
+        [
+          "Casos reproducibles",
+          "256 estímulos por perfil. Semilla 20261005, casos dirigidos y palabras crudas."
+        ],
+        [
+          "INT8 / INT16",
+          "Oráculo independiente de producto punto firmado módulo 2^bits(R)."
+        ],
+        [
+          "FXP / FP / Posit / LNS",
+          "Oráculo del propio RTL. Comparación bit a bit; precisión matemática no evaluada."
+        ]
+      ],
+      "takeaway": "La prueba adicional de enteros no se extiende automáticamente a las otras aritméticas."
+    },
+    {
+      "title": "Dos flancos por estímulo respetan el wrapper registrado",
+      "section": "17 · Simulación original",
+      "type": "flow",
+      "notes": "El testbench asigna los operandos, genera un primer flanco para capturar entradas y un segundo para registrar el resultado. Después rechaza salidas indefinidas y las escribe como hexadecimal. Los pequeños waits garantizan el orden de eventos de simulación; no son una restricción de síntesis y no demuestran que la lógica alcance 50 MHz. La simulación mapped utiliza la misma secuencia lógica de flancos, pero no hay SDF ni modelos de retardos de celda.",
+      "refs": [
+        "F07"
+      ],
+      "local": "validation.py · VHDL_TESTBENCH / VERILOG_TESTBENCH",
+      "steps": [
+        [
+          "Asignar A/B/C",
+          "Entradas estables"
+        ],
+        [
+          "Flanco 1",
+          "Registrar entradas"
+        ],
+        [
+          "Flanco 2 + muestreo",
+          "Registrar y comprobar R"
+        ]
+      ],
+      "code": "assert not is_x(r) ... severity failure;\nVALIDATION_OK 256\nrtl-results.txt → vectors.txt (entradas + esperado)",
+      "takeaway": "Los tiempos del testbench ordenan eventos; no constituyen STA ni cierre temporal."
+    },
+    {
+      "title": "GHDL genera Verilog para que Yosys pueda sintetizar el diseño",
+      "section": "18 · Conversión",
+      "type": "code",
+      "notes": "El programa usa el frontend standalone de GHDL. No invoca un plugin de GHDL dentro de Yosys. --synth elabora el top y --out=verilog escribe design.v. La documentación de GHDL declara experimental su motor de síntesis; por eso la conversión no se acepta solo porque terminó con código 0. La netlist final se compara con el RTL mediante simulación. No se calcula área en esta fase y el tamaño de design.v en disco no se usa como área física.",
+      "refs": [
+        "F01"
+      ],
+      "local": "synthesis.py · fase converting",
+      "code": "ghdl --synth --std=08 \\\n  -fsynopsys -fexplicit \\\n  --out=verilog INT8_16_DPU_perf_top\n\n# stdout se guarda en design.v",
+      "explanation": "Entrada: VHDL analizado.\n\nSalida: Verilog estructural.\n\nTodavía no hay celdas de la biblioteca objetivo.\n\nLa preservación se comprueba después del mapeo.",
+      "takeaway": "La conversión es una transformación del diseño; requiere controles posteriores."
+    },
+    {
+      "title": "El script de Yosys hace explícita la política de síntesis y mapeo",
+      "section": "19 · Comandos reales",
+      "type": "code",
+      "notes": "Este fragmento reproduce el script generado para INT8. read_liberty -lib declara tipos de celdas como cajas negras para el mapeo; synth aplana y sintetiza, posponiendo ABC mediante -noabc. Después se mapean los FF y la lógica con la misma biblioteca. Se retira únicamente scopeinfo, un metadato, no hardware desconocido. check -assert añade un control estructural y write_json/write_verilog guardan la implementación. stat usa el mismo Liberty. No hay objetivo de frecuencia, lectura SDC, PnR o comando formal.",
+      "refs": [
+        "F02",
+        "F03",
+        "F04",
+        "F05"
+      ],
+      "local": "synthesis.py · synth.ys",
+      "code": "read_liberty -lib cells.lib\nread_verilog design.v\nhierarchy -check -top INT8_16_DPU_perf_top\nsynth -top INT8_16_DPU_perf_top -flatten -noabc\ndfflibmap -liberty cells.lib\nabc -liberty cells.lib\ndelete t:$scopeinfo\nclean\ncheck -assert\nwrite_json mapped.json\nwrite_verilog -noattr mapped.v\ntee -o stat.json stat -liberty cells.lib -json",
+      "explanation": "Una política común para comparar tecnologías.\n\nSin frecuencia objetivo.\n\nSin memoria SRAM mapeada.\n\nLos scripts y versiones del caso forman parte de la evidencia.",
+      "takeaway": "check -assert revisa estructura; no prueba equivalencia funcional.",
+      "compact": true
+    },
+    {
+      "title": "dfflibmap y ABC eligen celdas tecnológicas para funciones diferentes",
+      "section": "20 · Mapeo tecnológico",
+      "type": "flow",
+      "notes": "Yosys transforma el diseño en operadores y lógica genérica. dfflibmap resuelve los elementos secuenciales soportados por la biblioteca, con las inversiones o lógica que resulten necesarias. ABC realiza optimización y mapeo combinacional dentro de Yosys; no es un servicio separado del sistema. La biblioteca fija qué puertas y tamaños de drive están disponibles. El resultado depende de heurísticas y del catálogo; la ausencia de un objetivo temporal explícito no demuestra un óptimo global de área.",
+      "refs": [
+        "F02",
+        "F06"
+      ],
+      "local": "synth.ys · logs de ABC en run.log.gz",
+      "steps": [
+        [
+          "Lógica genérica",
+          "Operadores, puertas y FF"
+        ],
+        [
+          "dfflibmap",
+          "Estado → FF Liberty"
+        ],
+        [
+          "ABC -liberty",
+          "Lógica → puertas Liberty"
+        ]
+      ],
+      "formula": "Netlist mapeada = instancias concretas + conexiones lógicas",
+      "takeaway": "Se mide el resultado de esa política de mapeo; no un mínimo matemático universal."
+    },
+    {
+      "title": "El cálculo de área puede reconstruirse celda por celda",
+      "section": "21 · Cuenta verificable",
+      "type": "ledger",
+      "notes": "El ejemplo usa el reporte real INT8/16 con Nangate45. Cada fila representa un tipo de celda con su multiplicidad y su área de biblioteca. Los restantes tipos combinacionales se agrupan solo para legibilidad de la diapositiva; el reporte CSV conserva cada tipo. Los 96 DFF_X1 aportan 434.112 unidades de área. Al sumar todas las instancias se obtiene 7578.872, igual a stat -liberty. La unidad física se respalda con el databook original, que etiqueta um2; el estándar Liberty no impone una unidad universal para todos los paquetes.",
+      "refs": [
+        "F04",
+        "F11"
+      ],
+      "local": "int8_16/nangate45/report.json · stat.json · cells.lib",
+      "takeaway": "Contar instancias × área de celda es distinto de estimar área con LUT, tamaño de archivo o nodo."
+    },
+    {
+      "title": "La clasificación distingue lógica, FF, latches y macros por semántica",
+      "section": "22 · Contabilidad y rechazos",
+      "type": "code",
+      "notes": "El lector local elimina comentarios preservando cadenas y recorre los bloques cell. Exige area finita no negativa y nombres únicos. La categoría se obtiene por grupos ff/ff_bank, latch/latch_bank y memory; no por reconocer letras en el nombre de una celda. El resumen cuenta tipos del módulo top aplanado, rechaza memorias sin mapear y tipos que no aparecen en Liberty. Los tres catálogos concretos han sido revisados; este parser acotado no se presenta como un parser universal de todo Liberty posible.",
+      "refs": [],
+      "local": "infrastructure/liberty.py · read_cells() / summarize_netlist()",
+      "code": "counts = Counter(\n  cell[\"type\"] for cell in module[\"cells\"].values()\n)\nunknown = set(counts) - set(cells)\nif unknown: raise PipelineFailure(...)\n\nsubtotal = definition.area * count\ncategories[definition.category] += subtotal\n\n# Decimal durante la suma; float al serializar JSON",
+      "explanation": "Se rechazan:\n\n• Tipos sin mapear.\n• Áreas inválidas o ausentes.\n• Diseño vacío.\n• Memorias pendientes.\n• Estado fuera del perfil.",
+      "takeaway": "Una celda desconocida detiene el reporte; no se elimina para forzar un número."
+    },
+    {
+      "title": "La netlist se contrasta con el RTL usando modelos del mismo Liberty",
+      "section": "23 · Simulación posterior al mapeo",
+      "type": "code",
+      "notes": "Yosys importa funciones del Liberty sin-lib y genera cells_sim.v. Las opcionesignore_miss permiten omitir definiciones no soportadas del catálogo; si una celda utilizada falta o no elabora correctamente, Icarus o la comparación debe fallar. El mismo conjunto de vectores se usa contra mapped.v y se exige igualdad de cuatro estados mediante!==. Se comprueba además el marcador de 256 casos. Esta simulación es funcional sin SDF; los retrasos del testbench no caracterizan caminos de silicio.",
+      "refs": [
+        "F03",
+        "F07"
+      ],
+      "local": "validation.py · validate_mapped() · simulation_cells.ys",
+      "code": "yosys -s simulation_cells.ys\niverilog -g2012 -s area_validation_tb \\\n  -o mapped_sim validation_tb.v mapped.v cells_sim.v\nvvp mapped_sim\n\nif (r !== expected) $fatal(1, \"Mapped mismatch...\");",
+      "explanation": "Referencia: rtl-results.txt.\n\nComparación: bit a bit.\n\nSe rechazan X/Z y diferencias.\n\nNo se cargan retardos SDF.",
+      "takeaway": "256 coincidencias respaldan los casos ejercitados; no equivalencia exhaustiva ni precisión ideal."
+    },
+    {
+      "title": "La confianza surge de controles complementarios, con límites distintos",
+      "section": "24 · Sustentación del método",
+      "type": "table",
+      "notes": "No existe un único control que convierta todos los datos en verdad física. La identidad de bytes conecta una corrida con sus entradas. La cuenta por tipos conecta su área con el catálogo. La comparación con stat reduce errores del adaptador, pero ambas cuentas comparten la caracterización física de Liberty. La simulación limita regresiones en los casos recorridos. El oráculo entero añade independencia respecto al propio RTL. Formal, STA y PnR aportarían otros niveles, que este sistema no ha ejecutado.",
+      "refs": [
+        "F04",
+        "F05",
+        "F18"
+      ],
+      "local": "auditar_evidencias.py · synthesis.py · validation.py",
+      "headers": [
+        "Control",
+        "Qué permite sostener",
+        "Qué no prueba"
+      ],
+      "rows": [
+        [
+          "SHA-256",
+          "Mismos bytes de entrada",
+          "Corrección original o certificación externa"
+        ],
+        [
+          "Suma ↔ stat",
+          "Coherencia contable",
+          "Otra caracterización física independiente"
+        ],
+        [
+          "RTL ↔ netlist",
+          "Preservación en 256 estímulos",
+          "Todos los estados o entradas posibles"
+        ],
+        [
+          "Oráculo INT",
+          "Producto punto modular en esos casos",
+          "Exactitud matemática de FP/Posit/LNS"
+        ],
+        [
+          "Pruebas de software",
+          "Contratos, errores y filtros",
+          "Área física real de un chip"
+        ]
+      ],
+      "widths": [
+        2.05,
+        4.4,
+        4.8
+      ],
+      "takeaway": "El argumento sólido declara exactamente qué riesgo cubre cada evidencia."
+    },
+    {
+      "title": "El reporte conserva datos de cálculo y datos de procedencia",
+      "section": "25 · Salidas y persistencia",
+      "type": "cards",
+      "notes": "La salida JSON integra áreas, conteos, tecnología, formato y validación junto al manifiesto. El CSV expone las filas por tipo de celda. SQLite conserva el estado y el reporte del experimento; la carpeta del run conserva fuentes, scripts y netlists. El ZIP de la aplicación reúne esos archivos y las fuentes anidadas, incluidas las unidades derivadasPosit. Los datos de validación histórica guardados en docs no se insertan automáticamente como trabajos ficticios en la base.",
+      "refs": [
+        "F16"
+      ],
+      "local": "synthesis.py · api/routes.py · sqlite_repository.py",
+      "cards": [
+        [
+          "report.json / CSV",
+          "Áreas por categoría, instancias y biblioteca. Estado de validación explícito."
+        ],
+        [
+          "manifest.json",
+          "Fuentes, Liberty, versiones, política y hashes de estímulos y respuestas."
+        ],
+        [
+          "ZIP + SQLite",
+          "El ZIP conserva artefactos; SQLite mantiene trabajos y resultados persistidos."
+        ]
+      ],
+      "takeaway": "Una gráfica debe poder volver al UUID, manifiesto, script y reporte por celda."
+    },
+    {
+      "title": "La comparación de la interfaz aplica filtros concretos",
+      "section": "26 · Lectura correcta de los gráficos",
+      "type": "cards",
+      "notes": "ComparisonPanel ofrece dos modos. En tecnología filtra el design_id elegido y toma la última evaluación exitosa por technology_id. En formatos filtra una tecnología y toma la última exitosa por design_id. Se ordena por fecha, no por orden accidental de la lista. Actualmente no agrupa por hashes de script o biblioteca; para series futuras con versiones diferentes se debe comprobar la cohorte antes de comparar. La vista no simula datos ni precarga resultados. La lista de API devuelve los últimos100experimentos, lo que también limita el historial visible.",
+      "refs": [
+        "F14"
+      ],
+      "local": "ComparisonPanel.tsx · contracts.ts · repository.list(limit=100)",
+      "cards": [
+        [
+          "Entre tecnologías",
+          "La misma DPU; últimas corridas exitosas por biblioteca."
+        ],
+        [
+          "Entre formatos",
+          "Una biblioteca; última corrida exitosa de cada diseño."
+        ],
+        [
+          "Control que falta reforzar",
+          "Evitar mezclar versiones o políticas distintas solo porque coinciden los IDs."
+        ]
+      ],
+      "takeaway": "Una comparación visual correcta requiere también una cohorte de entradas y políticas compatible."
+    },
+    {
+      "title": "La evidencia completa alcanza 30 de las 33 combinaciones planeadas",
+      "section": "27 · Cobertura real",
+      "type": "coverage",
+      "notes": "La matriz se construye leyendo qué report.json existen en el archivo, no asignando estados por conveniencia. Cada verde dispone de reportes, manifiesto, stat, vectores y dos marcadores de validación en un log. LNS16 no tiene esos tres reportes finales y se muestra como pendiente, sin área0ni valor interpolado. Son7680ejecuciones de vectores documentadas en RTL y otras 7680enmapped; las tecnologías comparten conjuntos de estímulos por diseño y no deben venderse como7680muestras aleatorias independientes.",
+      "refs": [],
+      "local": "docs/validation/dpu-matrix-20261018/ · auditoria_evidencias.json",
+      "takeaway": "30 casos documentados no significa que LNS16 ni las TCU completas estén validadas."
+    },
+    {
+      "title": "El ejemplo INT8 muestra valores existentes y su fuente verificable",
+      "section": "28 · Reporte real",
+      "type": "chart",
+      "notes": "El gráfico contiene exclusivamente los tres reportes almacenados de INT8/16. Las cifras se cargan del archivo auditado, no se escriben a mano como resultados. Todos incluyen96 FF, el mismo RTL y la política indicada, pero catálogos, tensiones y tecnología son diferentes. La diferencia no permite concluir que la razón de áreas siga la leycuadrática del nodo ni que rindan igual. El valor es el área nominal total de celdas de la implementación mapeada.",
+      "refs": [
+        "F04"
+      ],
+      "local": "int8_16/{ihp130,nangate45,nangate15}/report.json",
+      "chart": "int8",
+      "takeaway": "Es una comparación de bibliotecas e implementaciones; no de velocidad, potencia o silicio fabricado."
+    },
+    {
+      "title": "Dentro de Nangate45, el formato cambia la implementación y el área",
+      "section": "29 · Comparación con biblioteca fija",
+      "type": "chart",
+      "notes": "Esta gráfica usa los diez reportesNangate45completos. La tecnología queda fija para facilitar la lectura de diferencias entre implementaciones. Sin embargo los anchos, cantidad de registros, aritmética y redondeo no son iguales. No se afirma que la menor área represente mejor precisión o eficiencia de una aplicación. LNS16 se omite del gráfico de valores porque no tiene un reporte final; su ausencia se explicita en lugar de fabricar un resultado.",
+      "refs": [],
+      "local": "auditoria_evidencias.json · casos nangate45",
+      "chart": "formats45",
+      "takeaway": "LNS16 no se grafica: no existe un área final validada en el archivo."
+    },
+    {
+      "title": "La auditoría volvió a comprobar el archivo sin ejecutar EDA",
+      "section": "30 · Verificación de esta revisión",
+      "type": "cards",
+      "notes": "auditar_evidencias.py recorre únicamente artefactos guardados y los inputs actuales. Verifica hashes de originales y snapshots, identidad de manifiestos, perfiles, conteos de tipos contra stat, unidades derivadas Posit, hashes y vinculación de vectores. Recalcula las áreas con Decimal desde los tres Liberty y verifica salidas enteras. El máximo desacuerdo contable observado al recalcular es0bajo esta serialización. Las 20 pruebas backend y 42 frontend se ejecutaron hoy; las 30integracionesEDA pertenecen al archivo anterior, no a nuevas corridas.",
+      "refs": [],
+      "local": "auditar_evidencias.py · auditoria_evidencias.json/.csv · pytest/vitest 19/10",
+      "cards": [
+        [
+          "44 entradas",
+          "Originales y snapshots coinciden con los SHA-256 registrados."
+        ],
+        [
+          "30 cuentas de área",
+          "Filas y categorías coinciden con Liberty y stat. Desacuerdo observado: 0."
+        ],
+        [
+          "1.536 resultados INT",
+          "Recalculados en Python. Además: 20 tests backend y 42 tests frontend aprobados."
+        ]
+      ],
+      "takeaway": "Hoy se verificó el archivo conservado; no se volvieron a sintetizar los circuitos."
+    },
+    {
+      "title": "El archivo compacto permite auditar cuentas, pero no repetir toda la simulación",
+      "section": "31 · Brecha de evidencia",
+      "type": "cards",
+      "notes": "Tras el episodio de presión de memoria se compactaron los temporales para liberar recursos. Se conservaron reportes, scripts, entradas de prueba, resultados y logs; no se conservaron mapped.v, mapped.json, design.v ni cells_sim.v de esas30 corridas. Por ello hoy se cruza el desglose del reporte con stat y la biblioteca, pero no se vuelve a contar desde mapped.json ni se ejecuta la netlist. La aplicación sí está diseñada para incluir netlists en el ZIP al final de un run; para una publicación se debe retener ese paquete completo.",
+      "refs": [],
+      "local": "Inventario real de docs/validation/dpu-matrix-20261018/",
+      "cards": [
+        [
+          "Conservado",
+          "Reportes, manifiestos, stat, scripts, vectores, testbenches y logs gzip."
+        ],
+        [
+          "No conservado",
+          "Netlists mapped.v / mapped.json, conversión design.v y modelos cells_sim.v."
+        ],
+        [
+          "Cierre recomendado",
+          "Retener el ZIP completo y sus hashes en futuras corridas controladas."
+        ]
+      ],
+      "takeaway": "Los logs documentan una ejecución; no sustituyen los archivos necesarios para repetirla."
+    },
+    {
+      "title": "LNS16 expuso un límite de recursos del entorno de pruebas",
+      "section": "32 · Incidente y control operativo",
+      "type": "cards",
+      "notes": "LNS16 contiene tablas de corrección que aumentan la carga de conversión y optimización. Los ensayos locales coincidieron con presión de RAM y swap y fueron detenidos. El runner limita tiempo y mata el grupo al excederlo, pero no impone un límite de memoria al proceso local. Compose declara4 GB,2 CPUy128 PIDs para el contenedor; esos límites no se aplicaban a los ensayos ejecutados directamente en la máquina. No se debe afirmar que aumentar timeout soluciona el problema ni que4 GB bastan paraLNS. No se asignan resultados a sus tres casos pendientes.",
+      "refs": [],
+      "local": "process_runner.py · Settings · compose.yaml · lns16-incomplete/",
+      "cards": [
+        [
+          "Límite temporal",
+          "900 s por comando; código de salida y stdout/stderr al log."
+        ],
+        [
+          "Límite de memoria",
+          "Compose: 4 GB y 2 CPU. El runner local no impone límite de RAM."
+        ],
+        [
+          "LNS16 pendiente",
+          "No cerrar sus tres casos hasta evaluar recursos en ejecución acotada."
+        ]
+      ],
+      "takeaway": "Un fallo por recursos no invalida los otros reportes; tampoco habilita a inventar el faltante."
+    },
+    {
+      "title": "La calidad del método depende de cerrar cuatro brechas concretas",
+      "section": "33 · Mejoras antes de conclusiones fuertes",
+      "type": "table",
+      "notes": "La revisión encontró una base coherente y límites que conviene tratar como acciones, no como notas escondidas. Primero, retener artefactos completos y un digest de código, imagen y script por corrida; el manifiesto actual no guarda todo eso. Segundo, cerrar la cobertura pendiente de LNS sin volver a saturar la máquina. Tercero, separar preservación de RTLde exactitud matemática y desarrollar un oráculo independiente si se quiere hacer esa afirmación sobre otras familias. Cuarto, agrupar comparaciones por hashes y política además deID. Formal oSTAson trabajos adicionales solo si las preguntas de investigación requieren ese alcance.",
+      "refs": [],
+      "local": "Hallazgos de la auditoría de código y evidencias",
+      "headers": [
+        "Brecha",
+        "Por qué importa",
+        "Acción verificable"
+      ],
+      "rows": [
+        [
+          "Artefactos / versiones",
+          "Repetir y revisar el resultado exacto",
+          "ZIP completo + hashes de código, imagen y script"
+        ],
+        [
+          "LNS16 / recursos",
+          "Tres casos sin área publicada",
+          "Ejecutar con memoria y tiempo acotados"
+        ],
+        [
+          "Oráculos no enteros",
+          "El RTL puede compartir un error con su referencia",
+          "Referencia numérica independiente si se afirma exactitud"
+        ],
+        [
+          "Cohortes comparables",
+          "IDs iguales pueden ocultar cambios de biblioteca",
+          "Filtrar por hash y política de mapeo"
+        ]
+      ],
+      "widths": [
+        2.15,
+        4.1,
+        5.0
+      ],
+      "takeaway": "Estas mejoras refuerzan las afirmaciones; no se presentan como implementadas hoy."
+    },
+    {
+      "title": "La conclusión debe nombrar implementación, biblioteca y nivel de prueba",
+      "section": "34 · Sustentación para la reunión",
+      "type": "verdict",
+      "notes": "Una formulación rigurosa es: para la DPU y wrapper concretos, con snapshots y condiciones identificados, este flujo produjo una implementación mapeada cuyo área nominal de celdas es la suma auditada de sus instancias. Se documentó preservación funcional para256 estímulos y una referencia modular independiente en los perfiles enteros. No debe decirse que se demostró área final del chip, mínimo global, equivalencia exhaustiva, frecuencia objetivo ni precisión numérica independiente de todas las familias. El valor de la presentación es permitir a un revisor aceptar o refutar cada eslabón con evidencia.",
+      "refs": [
+        "F01",
+        "F04",
+        "F06",
+        "F18"
+      ],
+      "local": "Código auditado + 30 paquetes de evidencia",
+      "statement": "“Estimación prelayout del área nominal de celdas de la DPU registrada, mapeada con la biblioteca y política documentadas.”",
+      "left": "Sustentado: identidad de entradas, cuenta de celdas y comportamiento en los casos registrados.",
+      "right": "Pendiente: cobertura LNS16, archivo completo y cualquier afirmación de precisión, timing o silicio.",
+      "takeaway": "Es defendible como estudio de área de celdas, con validación y límites expresamente acotados."
+    },
+    {
+      "title": "La revisión necesita decisiones sobre evidencia y alcance",
+      "section": "35 · Preguntas para feedback",
+      "type": "cards",
+      "notes": "Estas preguntas llevan a decisiones técnicas concretas. El grupo puede aprobar el alcance de celdas y wrappers, decidir si la caracterizaciónpredictiva es suficiente para el objetivo académico y definir el estándar de conservación de artefactos. También debe decidir si quiere comparar solo área o añadir precisión, potencia o frecuencia, lo que requeriría otros controles y experimentos. Las propuestas adicionales delExcel no se habilitan ni ejecutan por presentar esta diapositiva.",
+      "refs": [],
+      "local": "",
+      "cards": [
+        [
+          "Alcance",
+          "¿Se acepta área de celdas con wrapper, sin PnR ni objetivos de frecuencia?"
+        ],
+        [
+          "Evidencia",
+          "¿Se exige ZIP completo, hashes de código/imagen y repetición controlada antes de publicar?"
+        ],
+        [
+          "Ampliación",
+          "¿Se prioriza cerrar LNS16, estudiar otros corners o desarrollar oráculos numéricos?"
+        ]
+      ],
+      "takeaway": "El visto bueno debe referirse al método y a sus condiciones, no a una precisión física no demostrada."
+    },
+    {
+      "title": "Anexo A · El mapa de archivos conecta cada afirmación con su implementación",
+      "section": "Anexo técnico",
+      "type": "table",
+      "notes": "Las rutas son relativas a asic-area-lab. Estos archivos conectan las decisiones de selección, ejecución, validación y representación. Se pueden abrir durante la reunión para revisar una cifra concreta. Los hashes del código guardados en auditoria_evidencias.json identifican la versión inspeccionada hoy. No son un digest de aplicación capturado cuando se ejecutaron las síntesis anteriores.",
+      "refs": [],
+      "local": "backend/src/area_lab/ · frontend/src/",
+      "headers": [
+        "Responsabilidad",
+        "Archivo / símbolo"
+      ],
+      "rows": [
+        [
+          "Perfil y tecnología",
+          "infrastructure/designs.py · catalog.py"
+        ],
+        [
+          "Contrato de entrada",
+          "api/schemas.py · CreateExperimentRequest"
+        ],
+        [
+          "Cola y estado",
+          "application/services.py · ExperimentService"
+        ],
+        [
+          "Preparación VHDL",
+          "infrastructure/vhdl.py · analyze_sources"
+        ],
+        [
+          "Oráculo y comparación",
+          "infrastructure/validation.py"
+        ],
+        [
+          "Síntesis y reportes",
+          "infrastructure/synthesis.py · GhdlYosysSynthesis.run"
+        ],
+        [
+          "Área y categorías",
+          "infrastructure/liberty.py"
+        ],
+        [
+          "Ejecución externa",
+          "infrastructure/process_runner.py"
+        ],
+        [
+          "Persistencia / descargas",
+          "infrastructure/sqlite_repository.py · api/routes.py"
+        ],
+        [
+          "Filtros de gráficos",
+          "frontend/src/features/experiments/ComparisonPanel.tsx"
+        ]
+      ],
+      "widths": [
+        3.0,
+        8.25
+      ],
+      "dense": true
+    },
+    {
+      "title": "Anexo B · Los comandos de simulación RTL quedan registrados",
+      "section": "Anexo técnico",
+      "type": "code",
+      "notes": "El testbench se analiza en work e instancia el wrapper. La opción -e elabora y enlaza el ejecutable de simulación con el backend LLVM; por eso se requieren compilador C, linker y zlib de desarrollo. La ejecución -r falla ante aserciones. --ieee-asserts=disable-at-0 suprime avisos IEEE de inicialización; no desactiva los controles de las salidas muestreadas. Python comprueba además cantidad y definición de resultados.",
+      "refs": [
+        "F01"
+      ],
+      "local": "validation.py · validate_rtl()",
+      "code": "ghdl -a --std=08 -fsynopsys -fexplicit validation_tb.vhd\nghdl -e --std=08 -fsynopsys -fexplicit area_validation_tb\nghdl -r --std=08 -fsynopsys -fexplicit \\\n  area_validation_tb --assert-level=error \\\n  --ieee-asserts=disable-at-0\n\n# Exigir VALIDATION_OK 256 y 256 salidas definidas",
+      "explanation": "-a: analizar.\n\n-e: elaborar y enlazar.\n\n-r: simular y fallar ante aserciones.\n\nEl log conserva comando, salida, exit code y duración."
+    },
+    {
+      "title": "Anexo C · La memoria y los registros tienen una política explícita",
+      "section": "Anexo técnico",
+      "type": "cards",
+      "notes": "Los perfiles miden DPU combinacionales con wrappers registrados. LNS16 incluye tablas ROM de corrección que se reducen a lógica. No se utiliza una macro SRAM ni una memoria comercial. El resumen rechaza memorias sin mapear, macros y latches inesperados. Si se decide estudiar macros, se necesitarán biblioteca, modelo funcional y política de mapeo específicos. Los bits de registros declarados no siempre equivalen a FF mapeados: una optimización puede eliminar estado no observable.",
+      "refs": [],
+      "local": "synthesis.py · memory_policy · summarize_netlist()",
+      "cards": [
+        [
+          "Registros",
+          "Incluidos; FF reales según la netlist. INT8: 96, INT16: 192 esperados."
+        ],
+        [
+          "ROM de corrección",
+          "Se implementa como lógica combinacional, no como macro SRAM."
+        ],
+        [
+          "Control de salida",
+          "Se rechazan memorias residuales, latches y macros inesperadas."
+        ]
+      ]
+    },
+    {
+      "title": "Anexo D · Las API permiten seguir y auditar un experimento",
+      "section": "Anexo técnico",
+      "type": "table",
+      "notes": "La API valida UUID y busca los artefactos en la carpeta de ese experimento. El log HTTP expone como máximo los últimos 100 KB; el ZIP conserva el log completo. El CSV exige estado succeeded. El ZIP rechaza trabajos queued o running, pero admite diagnósticos de trabajos fallidos. Una cola llena devuelve 429; solicitudes fuera del contrato se rechazan antes de ejecutar comandos. El estado health=ok acredita respuesta HTTP, no una prueba del circuito.",
+      "refs": [],
+      "local": "api/routes.py · main.py",
+      "headers": [
+        "Endpoint",
+        "Uso / condición"
+      ],
+      "rows": [
+        [
+          "GET /api/v1/catalog",
+          "Perfiles y bibliotecas habilitadas"
+        ],
+        [
+          "POST /api/v1/experiments",
+          "Crea UUID; devuelve 202"
+        ],
+        [
+          "GET /api/v1/experiments/{id}",
+          "Estado y reporte del caso"
+        ],
+        [
+          "GET /api/v1/experiments/{id}/logs",
+          "Cola del log; hasta 100 KB"
+        ],
+        [
+          "GET /api/v1/experiments/{id}/artifacts",
+          "ZIP; disponible al terminar o fallar"
+        ],
+        [
+          "GET /api/v1/experiments/{id}/report.csv",
+          "Desglose por celda; exige succeeded"
+        ],
+        [
+          "GET /api/health",
+          "Salud HTTP, no validez de área"
+        ]
+      ],
+      "widths": [
+        6.6,
+        4.65
+      ],
+      "dense": true
+    },
+    {
+      "title": "Anexo E · Tabla trazable de áreas documentadas",
+      "section": "Anexo técnico",
+      "type": "table",
+      "notes": "Las cifras se cargan de los reportes auditados. Se conservan seis decimales para identificar los valores serializados, no para afirmar esa exactitud física. Cada valor tiene reporte, stat y log. Los corners tienen condiciones nominales propias y la política de mapeo indicada. La convención de unidades de las bibliotecas se documenta en las fuentes. LNS16 permanece pendiente: no se usa cero ni una interpolación para llenar esa fila.",
+      "refs": [
+        "F04",
+        "F11"
+      ],
+      "local": "auditoria_evidencias.csv · tabla generada desde report.json",
+      "headers": [
+        "DPU",
+        "IHP130 · µm²",
+        "Nangate45 · µm²",
+        "Nangate15 · µm²"
+      ],
+      "rows": [
+        [
+          "int8_16",
+          "68,143.836600",
+          "7,578.872000",
+          "896.139264"
+        ],
+        [
+          "int16_32",
+          "86,031.514800",
+          "9,550.996000",
+          "2,594.979840"
+        ],
+        [
+          "fxp8_16",
+          "67,321.913400",
+          "7,819.070000",
+          "954.531840"
+        ],
+        [
+          "fxp16_32",
+          "277,921.513800",
+          "31,881.962000",
+          "3,775.709184"
+        ],
+        [
+          "fp8",
+          "31,708.870200",
+          "3,606.162000",
+          "983.040000"
+        ],
+        [
+          "fp16",
+          "90,989.249400",
+          "10,138.590000",
+          "2,793.996288"
+        ],
+        [
+          "fp32",
+          "269,112.186000",
+          "30,084.866000",
+          "8,200.962048"
+        ],
+        [
+          "posit8",
+          "42,834.015000",
+          "4,983.510000",
+          "1,289.551872"
+        ],
+        [
+          "posit16",
+          "118,561.816800",
+          "13,595.260000",
+          "3,649.781760"
+        ],
+        [
+          "posit32",
+          "369,588.668400",
+          "41,123.068000",
+          "11,287.609344"
+        ],
+        [
+          "lns16",
+          "PENDIENTE",
+          "PENDIENTE",
+          "PENDIENTE"
+        ]
+      ],
+      "widths": [
+        2.25,
+        3,
+        3,
+        3
+      ],
+      "dense": true,
+      "takeaway": "Los decimales expresan la cuenta de biblioteca, no la incertidumbre de un chip real."
+    },
+    {
+      "title": "Anexo F · Release fijada no significa imagen completamente identificada",
+      "section": "Anexo técnico",
+      "type": "cards",
+      "notes": "El Dockerfile fija OSS CAD Suite 2026-09-04 y el SHA-256 del archivo descargado. Esto ayuda a repetir las herramientas, pero no captura por sí solo el entorno completo. El manifiesto histórico aún no contiene digest final de imagen, hash integral del código y hash de cada script. Las imágenes base se referencian por etiqueta. Se deben preservar los identificadores completos de las versiones de desarrollo, sin sustituirlos por una versión estable actual.",
+      "refs": [
+        "F12",
+        "F17"
+      ],
+      "local": "Dockerfile · manifest.tool_versions · auditoria_evidencias.json",
+      "cards": [
+        [
+          "Suite fijada",
+          "OSS CAD Suite 2026-09-04 y SHA-256 del archivo descargado."
+        ],
+        [
+          "Versiones retenidas",
+          "GHDL 7.0.0-dev; Yosys 0.68+182; Icarus 14.0 devel."
+        ],
+        [
+          "Refuerzo recomendado",
+          "Digest de imagen, código y scripts por corrida; preservar los binarios o el contenedor."
+        ]
+      ]
+    },
+    {
+      "title": "Anexo G · La comprobación del build detecta fallos reales del toolchain",
+      "section": "Anexo técnico",
+      "type": "code",
+      "notes": "El runtime incluye build-essential y zlib1g-dev porque GHDL LLVM necesita cc y el enlace -lz. Trixie proporciona la versión de glibc que necesita el runtime de la suite fijada. El build ejecuta check_toolchain.py como usuario sin root y comprueba análisis, elaboración, simulación y conversión de un circuito pequeño. Puede detectar una instalación rota aunque --version funcione. No sustituye simular cada DPU ni garantiza memoria suficiente para LNS16.",
+      "refs": [],
+      "local": "Dockerfile · scripts/check_toolchain.py",
+      "code": "RUN apt-get install ... build-essential zlib1g-dev\nUSER area-lab\nRUN python /app/scripts/check_toolchain.py\n\n# Verifica: compilador + enlace nativo\n# GHDL: análisis → elaboración → simulación → Verilog",
+      "explanation": "Un smoke test de instalación.\n\nDetecta cc ausente y problemas de enlace.\n\nFalla el build si el toolchain está roto.\n\nNo ejecuta la matriz de DPU."
+    },
+    {
+      "title": "Anexo H · Cómo repetir la auditoría sin sintetizar",
+      "section": "Anexo técnico",
+      "type": "code",
+      "notes": "La auditoría lee únicamente artefactos guardados y recalcula hashes, asociaciones de vectores y áreas. No abre un servidor ni una cola de trabajos. Las pruebas nonintegration usan gateways simulados o funciones pequeñas; se excluyen las integraciones que invocan herramientas EDA. Las pruebas frontend verifican contratos y filtros de presentación. Hoy pasaron 20 pruebas backend y 42 frontend, además de la auditoría estática de los 30 paquetes completos.",
+      "refs": [],
+      "local": "auditar_evidencias.py · backend/tests · frontend/src/**/*.test.*",
+      "code": "python3 docs/presentaciones/revision_pipeline_2026-10-19/\\\n  auditar_evidencias.py\n\n.venv/bin/pytest backend/tests -m \"not integration\" \\\n  -q -p no:cacheprovider\n\ncd frontend\nnpm test",
+      "explanation": "Auditoría: 30 paquetes coherentes.\n\nPruebas ligeras: 20 backend.\n\nContratos e interfaz: 42 frontend.\n\nSin nuevas síntesis ni prueba de navegador."
+    },
+    {
+      "title": "Anexo I · El backend coordina y persiste; las herramientas EDA calculan",
+      "section": "Anexo técnico",
+      "type": "table",
+      "notes": "Python implementa los casos de uso, la ejecución de procesos y la cuenta de área. Uvicorn es el servidor ASGI que aloja FastAPI; no es un motor de síntesis. FastAPI y Pydantic validan las solicitudes y estructuran las respuestas. SQLite conserva trabajos y reportes dentro del proceso, con modo WAL y una conexión por operación. Docker empaqueta el entorno y Compose declara recursos y volumen. La validez del dato de área depende de los adaptadores EDA y del cálculo auditado, no de elegir un framework web concreto.",
+      "refs": [
+        "F19",
+        "F20",
+        "F21",
+        "F13",
+        "F16",
+        "F17"
+      ],
+      "local": "Dockerfile · main.py · api/schemas.py · hooks.ts · shared/api.ts",
+      "headers": [
+        "Tecnología",
+        "Función",
+        "Uso concreto en el programa"
+      ],
+      "rows": [
+        [
+          "Python",
+          "Orquestación y cálculo",
+          "services.py, synthesis.py, liberty.py"
+        ],
+        [
+          "Uvicorn / ASGI",
+          "Servidor HTTP del proceso",
+          "Docker CMD; un worker HTTP"
+        ],
+        [
+          "FastAPI + Pydantic",
+          "Rutas y validación de solicitudes",
+          "IDs enumerados; OpenAPI"
+        ],
+        [
+          "SQLite / WAL",
+          "Base embebida persistente",
+          "Estado y reportes por UUID"
+        ],
+        [
+          "Docker / Compose",
+          "Entorno y límites declarados",
+          "Imagen, volumen y recursos"
+        ]
+      ],
+      "widths": [
+        2.55,
+        4.1,
+        4.6
+      ]
+    },
+    {
+      "title": "Anexo J · El frontend valida contratos y representa reportes reales",
+      "section": "Anexo técnico",
+      "type": "table",
+      "notes": "React construye la interfaz por componentes. TypeScript comprueba tipos durante desarrollo y construcción; no valida por sí solo JSON que llega por red. Zod comprueba los contratos de respuesta en ejecución antes de representarlos. TanStack Query gestiona consultas, estados y caché; el código refresca experimentos cada1500ms cuando hay trabajo activo, y cada5000ms en caso contrario. Vite compila archivos estáticos de producción que sirve FastAPI. Ninguna de estas piezas calcula área de puertas ni acredita corrección del circuito.",
+      "refs": [
+        "F14",
+        "F15",
+        "F22",
+        "F23",
+        "F24"
+      ],
+      "local": "Dockerfile · main.py · api/schemas.py · hooks.ts · shared/api.ts",
+      "headers": [
+        "Tecnología",
+        "Función",
+        "Uso concreto en el programa"
+      ],
+      "rows": [
+        [
+          "React",
+          "Componentes, propiedades y estado",
+          "Formulario, reporte y comparación"
+        ],
+        [
+          "TypeScript",
+          "Tipos estáticos del código",
+          "No sustituye validar JSON en runtime"
+        ],
+        [
+          "Zod",
+          "Validación de respuestas HTTP",
+          "schema.parse(data) antes de la UI"
+        ],
+        [
+          "TanStack Query",
+          "Consultas, caché y polling",
+          "1,5 s con trabajos; 5 s sin trabajos"
+        ],
+        [
+          "Vite",
+          "Desarrollo y build del frontend",
+          "No es otro servicio de producción"
+        ]
+      ],
+      "widths": [
+        2.55,
+        4.1,
+        4.6
+      ]
+    },
+    {
+      "title": "Anexo K · Referencias oficiales del procesamiento de hardware · 1",
+      "section": "Bibliografía",
+      "type": "references",
+      "notes": "Las fuentes describen capacidades y límites de las herramientas, no prueban que todas esas capacidades se hayan ejecutado. Los comandos concretos y sus versiones están en cada manifiesto y log. FUENTES_VERIFICADAS.md conserva autor, fecha de consulta, enlaces y límite de cada afirmación. No se atribuyen pruebas formales a la aplicación por tener herramientas que podrían realizarlas.",
+      "refs": [
+        "F01",
+        "F02",
+        "F03",
+        "F04",
+        "F05",
+        "F06",
+        "F07",
+        "F18"
+      ],
+      "local": "",
+      "ids": [
+        "F01",
+        "F02",
+        "F03",
+        "F04"
+      ]
+    },
+    {
+      "title": "Anexo K · Referencias oficiales del procesamiento de hardware · 2",
+      "section": "Bibliografía",
+      "type": "references",
+      "notes": "Las fuentes describen capacidades y límites de las herramientas, no prueban que todas esas capacidades se hayan ejecutado. Los comandos concretos y sus versiones están en cada manifiesto y log. FUENTES_VERIFICADAS.md conserva autor, fecha de consulta, enlaces y límite de cada afirmación. No se atribuyen pruebas formales a la aplicación por tener herramientas que podrían realizarlas.",
+      "refs": [
+        "F01",
+        "F02",
+        "F03",
+        "F04",
+        "F05",
+        "F06",
+        "F07",
+        "F18"
+      ],
+      "local": "",
+      "ids": [
+        "F05",
+        "F06",
+        "F07",
+        "F18"
+      ]
+    },
+    {
+      "title": "Anexo L · Referencias de tecnología y plataforma · 1",
+      "section": "Bibliografía",
+      "type": "references",
+      "notes": "Las fuentes primarias distinguen proceso fabricado y kit predictivo. Las referencias de plataforma describen API, interfaz, empaquetado y persistencia; no calculan el área. El README suministrado de Nangate15 cita el artículo de Martins y el databook de Nangate45 etiqueta áreas en um2. El documento de fuentes explica el respaldo de unidades y los límites de correspondencia entre versiones.",
+      "refs": [
+        "F08",
+        "F09",
+        "F10",
+        "F11",
+        "F12",
+        "F13",
+        "F14",
+        "F15",
+        "F16",
+        "F17"
+      ],
+      "local": "",
+      "ids": [
+        "F08",
+        "F09",
+        "F10",
+        "F11",
+        "F12"
+      ]
+    },
+    {
+      "title": "Anexo L · Referencias de tecnología y plataforma · 2",
+      "section": "Bibliografía",
+      "type": "references",
+      "notes": "Las fuentes primarias distinguen proceso fabricado y kit predictivo. Las referencias de plataforma describen API, interfaz, empaquetado y persistencia; no calculan el área. El README suministrado de Nangate15 cita el artículo de Martins y el databook de Nangate45 etiqueta áreas en um2. El documento de fuentes explica el respaldo de unidades y los límites de correspondencia entre versiones.",
+      "refs": [
+        "F08",
+        "F09",
+        "F10",
+        "F11",
+        "F12",
+        "F13",
+        "F14",
+        "F15",
+        "F16",
+        "F17"
+      ],
+      "local": "",
+      "ids": [
+        "F13",
+        "F14",
+        "F15",
+        "F16",
+        "F17"
+      ]
+    },
+    {
+      "title": "Anexo M · Fuentes de lenguajes, servidor y validadores · 1",
+      "section": "Bibliografía",
+      "type": "references",
+      "notes": "Estas referencias oficiales respaldan las funciones de las tecnologías auxiliares. Se distingue validación de tipos y contratos de la validación funcional del hardware. Los archivos de dependencias del proyecto identifican las versiones instaladas; esta bibliografía describe las capacidades de cada proyecto, no demuestra una ejecución de síntesis.",
+      "refs": [
+        "F19",
+        "F20",
+        "F21",
+        "F22",
+        "F23",
+        "F24"
+      ],
+      "ids": [
+        "F19",
+        "F20",
+        "F21"
+      ],
+      "local": ""
+    },
+    {
+      "title": "Anexo M · Fuentes de lenguajes, servidor y validadores · 2",
+      "section": "Bibliografía",
+      "type": "references",
+      "notes": "Estas referencias oficiales respaldan las funciones de las tecnologías auxiliares. Se distingue validación de tipos y contratos de la validación funcional del hardware. Los archivos de dependencias del proyecto identifican las versiones instaladas; esta bibliografía describe las capacidades de cada proyecto, no demuestra una ejecución de síntesis.",
+      "refs": [
+        "F19",
+        "F20",
+        "F21",
+        "F22",
+        "F23",
+        "F24"
+      ],
+      "ids": [
+        "F22",
+        "F23",
+        "F24"
+      ],
+      "local": ""
+    }
+  ]
+}

@@ -1,0 +1,331 @@
+{
+  "total_area": 7578.872,
+  "combinational_area": 7144.76,
+  "sequential_area": 434.112,
+  "flip_flop_area": 434.112,
+  "latch_area": 0.0,
+  "macro_area": 0.0,
+  "total_cells": 6463,
+  "cell_counts": {
+    "combinational": 6367,
+    "flip_flop": 96,
+    "latch": 0,
+    "macro": 0
+  },
+  "cells": [
+    {
+      "name": "AND2_X1",
+      "category": "combinational",
+      "count": 196,
+      "unit_area": 1.064,
+      "total_area": 208.544
+    },
+    {
+      "name": "AND3_X1",
+      "category": "combinational",
+      "count": 154,
+      "unit_area": 1.33,
+      "total_area": 204.82
+    },
+    {
+      "name": "AND4_X1",
+      "category": "combinational",
+      "count": 97,
+      "unit_area": 1.596,
+      "total_area": 154.812
+    },
+    {
+      "name": "AOI211_X1",
+      "category": "combinational",
+      "count": 262,
+      "unit_area": 1.33,
+      "total_area": 348.46
+    },
+    {
+      "name": "AOI21_X1",
+      "category": "combinational",
+      "count": 306,
+      "unit_area": 1.064,
+      "total_area": 325.584
+    },
+    {
+      "name": "AOI221_X1",
+      "category": "combinational",
+      "count": 44,
+      "unit_area": 1.596,
+      "total_area": 70.224
+    },
+    {
+      "name": "AOI222_X1",
+      "category": "combinational",
+      "count": 15,
+      "unit_area": 2.128,
+      "total_area": 31.92
+    },
+    {
+      "name": "AOI22_X1",
+      "category": "combinational",
+      "count": 106,
+      "unit_area": 1.33,
+      "total_area": 140.98
+    },
+    {
+      "name": "DFF_X1",
+      "category": "flip_flop",
+      "count": 96,
+      "unit_area": 4.522,
+      "total_area": 434.112
+    },
+    {
+      "name": "INV_X1",
+      "category": "combinational",
+      "count": 225,
+      "unit_area": 0.532,
+      "total_area": 119.7
+    },
+    {
+      "name": "MUX2_X1",
+      "category": "combinational",
+      "count": 5,
+      "unit_area": 1.862,
+      "total_area": 9.31
+    },
+    {
+      "name": "NAND2_X1",
+      "category": "combinational",
+      "count": 689,
+      "unit_area": 0.798,
+      "total_area": 549.822
+    },
+    {
+      "name": "NAND3_X1",
+      "category": "combinational",
+      "count": 475,
+      "unit_area": 1.064,
+      "total_area": 505.4
+    },
+    {
+      "name": "NAND4_X1",
+      "category": "combinational",
+      "count": 415,
+      "unit_area": 1.33,
+      "total_area": 551.95
+    },
+    {
+      "name": "NOR2_X1",
+      "category": "combinational",
+      "count": 798,
+      "unit_area": 0.798,
+      "total_area": 636.804
+    },
+    {
+      "name": "NOR3_X1",
+      "category": "combinational",
+      "count": 467,
+      "unit_area": 1.064,
+      "total_area": 496.888
+    },
+    {
+      "name": "NOR4_X1",
+      "category": "combinational",
+      "count": 430,
+      "unit_area": 1.33,
+      "total_area": 571.9
+    },
+    {
+      "name": "OAI211_X1",
+      "category": "combinational",
+      "count": 224,
+      "unit_area": 1.33,
+      "total_area": 297.92
+    },
+    {
+      "name": "OAI21_X1",
+      "category": "combinational",
+      "count": 372,
+      "unit_area": 1.064,
+      "total_area": 395.808
+    },
+    {
+      "name": "OAI221_X1",
+      "category": "combinational",
+      "count": 31,
+      "unit_area": 1.596,
+      "total_area": 49.476
+    },
+    {
+      "name": "OAI222_X1",
+      "category": "combinational",
+      "count": 11,
+      "unit_area": 2.128,
+      "total_area": 23.408
+    },
+    {
+      "name": "OAI22_X1",
+      "category": "combinational",
+      "count": 63,
+      "unit_area": 1.33,
+      "total_area": 83.79
+    },
+    {
+      "name": "OAI33_X1",
+      "category": "combinational",
+      "count": 80,
+      "unit_area": 1.862,
+      "total_area": 148.96
+    },
+    {
+      "name": "OR2_X1",
+      "category": "combinational",
+      "count": 347,
+      "unit_area": 1.064,
+      "total_area": 369.208
+    },
+    {
+      "name": "OR3_X1",
+      "category": "combinational",
+      "count": 138,
+      "unit_area": 1.33,
+      "total_area": 183.54
+    },
+    {
+      "name": "OR4_X1",
+      "category": "combinational",
+      "count": 134,
+      "unit_area": 1.596,
+      "total_area": 213.864
+    },
+    {
+      "name": "XNOR2_X1",
+      "category": "combinational",
+      "count": 163,
+      "unit_area": 1.596,
+      "total_area": 260.148
+    },
+    {
+      "name": "XOR2_X1",
+      "category": "combinational",
+      "count": 120,
+      "unit_area": 1.596,
+      "total_area": 191.52
+    }
+  ],
+  "area_unit": "um2",
+  "area_unit_basis": "Nangate OCL: cell area in \u00b5m\u00b2; DOI 10.1145/2717764.2717783 for 15 nm.",
+  "design_id": "int8_16",
+  "numeric_format": "INT8_16",
+  "top": "INT8_16_DPU_perf_top",
+  "technology_id": "nangate45",
+  "technology_label": "Nangate Open Cell Library",
+  "node_nm": 45,
+  "corner": "typical",
+  "voltage_v": 1.1,
+  "temperature_c": 25,
+  "duration_seconds": 15.202,
+  "validation": {
+    "rtl": "passed",
+    "mapped": "passed",
+    "vectors": 256,
+    "seed": 20261005,
+    "formal_equivalence": "not_run",
+    "timing_analysis": "not_run"
+  },
+  "manifest": {
+    "schema_version": 1,
+    "experiment_id": "7a05e107-bfd4-476b-8a51-6eb720d18928",
+    "design": {
+      "id": "int8_16",
+      "label": "DPU INT8 / acumulaci\u00f3n INT16",
+      "numeric_format": "INT8_16",
+      "top": "INT8_16_DPU_perf_top",
+      "source_files": [
+        "rtl/int8_16/INT8_Mult.vhd",
+        "rtl/int8_16/INT8_Adder.vhd",
+        "rtl/int8_16/INT8_DPU.vhd"
+      ],
+      "wrapper_file": "rtl/int8_16/INT8_16_DPU_perf_top.vhd",
+      "declared_register_bits": 96
+    },
+    "technology": {
+      "id": "nangate45",
+      "label": "Nangate Open Cell Library",
+      "node_nm": 45,
+      "corner": "typical",
+      "voltage_v": 1.1,
+      "temperature_c": 25,
+      "liberty_file": "libraries/nangate45/cells.lib",
+      "available": true,
+      "reason": null,
+      "area_unit": "um2",
+      "unit_basis": "Nangate OCL: cell area in \u00b5m\u00b2; DOI 10.1145/2717764.2717783 for 15 nm."
+    },
+    "source_sha256": {
+      "rtl/int8_16/INT8_Mult.vhd": "00580f3b02e4d9f68afb7ab69e6195860e307ea3f56b6f3189347f50f7ba6de4",
+      "rtl/int8_16/INT8_Adder.vhd": "8df7e98c29bd94df00677627d7be99e2e147d869e093d1323c498f8f2fda345f",
+      "rtl/int8_16/INT8_DPU.vhd": "7e51fabb54c97c5bb4c8b01ec5134b17db48a0dbf126f3806822f35692ea7bd5",
+      "rtl/int8_16/INT8_16_DPU_perf_top.vhd": "b3173d3adc784fd29701950fe85a81df43f338508359d860802b0ddf05d1ad01"
+    },
+    "liberty_sha256": "2efd0b32eb580e4e60e72fc0575bb3bc69aac907c91d908442e4ae6d7fe55895",
+    "tool_versions": {
+      "ghdl": "GHDL 7.0.0-dev (6.0.0.r485.gfc6fddc30.dirty) [Dunoon edition]",
+      "yosys": "Yosys 0.68+182 (git sha1 0bf55a858-dirty, Release, Clang /usr/bin/clang++ 21.1.8)",
+      "iverilog": "Icarus Verilog version 14.0 (devel) (s20260301-394-g9edaf7b6a-dirty)"
+    },
+    "scope": "standard_cell_area_only",
+    "mapping_policy": "Yosys synth -noabc; dfflibmap; ABC default Liberty mapping; no timing target",
+    "memory_policy": "ROM lowered to combinational logic; no SRAM macros",
+    "functional_test": {
+      "seed": 20261005,
+      "arithmetic": "signed INT8 dot product modulo 2^16"
+    },
+    "excluded": [
+      "routing",
+      "wire_area",
+      "placement",
+      "floorplan",
+      "pads",
+      "clock_tree"
+    ],
+    "asset_snapshot": {
+      "repository_commit": "e677293903571c824430bb35a246f295486eea33",
+      "files": [
+        {
+          "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/int8_16/needed_flopoco_files/INT8_Mult.vhd",
+          "snapshot": "rtl/int8_16/INT8_Mult.vhd",
+          "sha256": "00580f3b02e4d9f68afb7ab69e6195860e307ea3f56b6f3189347f50f7ba6de4"
+        },
+        {
+          "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/int8_16/needed_flopoco_files/INT8_Adder.vhd",
+          "snapshot": "rtl/int8_16/INT8_Adder.vhd",
+          "sha256": "8df7e98c29bd94df00677627d7be99e2e147d869e093d1323c498f8f2fda345f"
+        },
+        {
+          "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/int8_16/INT8_DPU.vhd",
+          "snapshot": "rtl/int8_16/INT8_DPU.vhd",
+          "sha256": "7e51fabb54c97c5bb4c8b01ec5134b17db48a0dbf126f3806822f35692ea7bd5"
+        },
+        {
+          "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/wrappers/INT8_16_DPU_perf_top.vhd",
+          "snapshot": "rtl/int8_16/INT8_16_DPU_perf_top.vhd",
+          "sha256": "b3173d3adc784fd29701950fe85a81df43f338508359d860802b0ddf05d1ad01"
+        },
+        {
+          "original": "syn_libraries/130nm/lib/sg13g2_stdcell_typ_1p20V_25C.lib",
+          "snapshot": "libraries/ihp130/cells.lib",
+          "sha256": "fe04935bafe2acfbbad808695c6b1511c3f2550d37a4d0cc23f776ff1763bb1b"
+        },
+        {
+          "original": "syn_libraries/15nm/NLDM/NanGate_15nm_OCL_typical_conditional_nldm.lib",
+          "snapshot": "libraries/nangate15/cells.lib",
+          "sha256": "095358eae5326b9ab5530b42b9835e190df7bf2d35bdd136b05940bfff01dfc3"
+        },
+        {
+          "original": "syn_libraries/NangateOpenCellLibrary_PDKv1_3_v2010_12/Front_End/Liberty/NLDM/NangateOpenCellLibrary_typical.lib",
+          "snapshot": "libraries/nangate45/cells.lib",
+          "sha256": "2efd0b32eb580e4e60e72fc0575bb3bc69aac907c91d908442e4ae6d7fe55895"
+        }
+      ],
+      "note": "Hashes identify exact source bytes even if the repository has local changes."
+    }
+  }
+}

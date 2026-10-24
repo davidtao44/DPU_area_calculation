@@ -1,0 +1,12 @@
+{
+  "name": "revision-pipeline-asic-gira",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node generar_presentacion.cjs"
+  },
+  "dependencies": {
+    "pdfkit": "0.20.2",
+    "pptxgenjs": "4.0.1"
+  }
+}

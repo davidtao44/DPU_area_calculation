@@ -1,0 +1,487 @@
+{
+  "schema_version": 2,
+  "experiment_id": "f0f17d3f-f105-4b72-89cc-1a81b8b8be4f",
+  "design": {
+    "id": "posit16",
+    "label": "DPU Posit16 (es=1)",
+    "numeric_format": "POSIT16",
+    "top": "POSIT16_DPU_perf_top",
+    "source_files": [
+      "rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+      "rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+      "rtl/posit16/posit16_0_DPU.vhd"
+    ],
+    "wrapper_file": "rtl/posit16/POSIT16_DPU_perf_top.vhd",
+    "declared_register_bits": 160,
+    "library": "posit16_lib",
+    "operand_bits": 16,
+    "result_bits": 16,
+    "family": "posit",
+    "reference": "rtl_bit_exact",
+    "expected_flip_flops": null,
+    "numeric_notes": "Posit n=16, es=1 seg\u00fan el RTL, aunque los archivos se llaman posit16_0_*.",
+    "compilation": "unique_ghdl_units"
+  },
+  "technology": {
+    "id": "nangate15",
+    "label": "Nangate FreePDK15",
+    "node_nm": 15,
+    "corner": "typical",
+    "voltage_v": 0.8,
+    "temperature_c": 25,
+    "liberty_file": "libraries/nangate15/cells.lib",
+    "available": true,
+    "reason": null,
+    "area_unit": "um2",
+    "unit_basis": "Nangate OCL: cell area in \u00b5m\u00b2; DOI 10.1145/2717764.2717783 for 15 nm."
+  },
+  "source_sha256": {
+    "rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd": "4fe6d463b6fd15f9e9855e7895cc23f622bc7a2c940fd21b07ae9f9a54ac5b6b",
+    "rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd": "c5ea2b5e1a14f77293d707d98b0b66a62b3f2f9b26f922e4c2803655d3854241",
+    "rtl/posit16/posit16_0_DPU.vhd": "150704cdf6cdca6e34239247cb54b94a9891fbe19248bf21d9e1461fd3bad180",
+    "rtl/posit16/POSIT16_DPU_perf_top.vhd": "d329947fdeac20e730308197b7bab35366f1cbebb980cf71f50d6d809b9e16cd"
+  },
+  "liberty_sha256": "095358eae5326b9ab5530b42b9835e190df7bf2d35bdd136b05940bfff01dfc3",
+  "tool_versions": {
+    "ghdl": "GHDL 7.0.0-dev (6.0.0.r485.gfc6fddc30.dirty) [Dunoon edition]",
+    "yosys": "Yosys 0.68+182 (git sha1 0bf55a858-dirty, Release, Clang /usr/bin/clang++ 21.1.8)",
+    "iverilog": "Icarus Verilog version 14.0 (devel) (s20260301-394-g9edaf7b6a-dirty)"
+  },
+  "scope": "standard_cell_area_only",
+  "mapping_policy": "Yosys synth -noabc; dfflibmap; ABC default Liberty mapping; no timing target",
+  "memory_policy": "ROM lowered to combinational logic; no SRAM macros",
+  "functional_test": {
+    "seed": 20261005,
+    "reference": "rtl_bit_exact",
+    "numeric_notes": "Posit n=16, es=1 seg\u00fan el RTL, aunque los archivos se llaman posit16_0_*.",
+    "comparison": "bit-exact RTL vs mapped netlist; unknown outputs rejected",
+    "stimuli": "256 directed and deterministic raw-bit vectors",
+    "clock_policy": "two rising edges per stimulus; registered wrapper included",
+    "stimuli_sha256": "848fbb8bf1a3b7d1ebf9e48f3e2c8da38f9b44a28d2c412b627809373bb60311",
+    "rtl_results_sha256": "770c1625e95973eaaa91e0a33e9eec5209c2f596602655ab55cf3f1cffb133e4",
+    "vectors_sha256": "bb751d053f59fc12970e0edece8dea84cbdb08a0b8417c85b96ffd851e3678ab"
+  },
+  "excluded": [
+    "routing",
+    "wire_area",
+    "placement",
+    "floorplan",
+    "pads",
+    "clock_tree"
+  ],
+  "asset_snapshot": {
+    "repository_commit": "e677293903571c824430bb35a246f295486eea33",
+    "files": [
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/int8_16/needed_flopoco_files/INT8_Mult.vhd",
+        "snapshot": "rtl/int8_16/needed_flopoco_files/INT8_Mult.vhd",
+        "sha256": "00580f3b02e4d9f68afb7ab69e6195860e307ea3f56b6f3189347f50f7ba6de4"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/int8_16/needed_flopoco_files/INT8_Adder.vhd",
+        "snapshot": "rtl/int8_16/needed_flopoco_files/INT8_Adder.vhd",
+        "sha256": "8df7e98c29bd94df00677627d7be99e2e147d869e093d1323c498f8f2fda345f"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/int8_16/INT8_DPU.vhd",
+        "snapshot": "rtl/int8_16/INT8_DPU.vhd",
+        "sha256": "7e51fabb54c97c5bb4c8b01ec5134b17db48a0dbf126f3806822f35692ea7bd5"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/wrappers/INT8_16_DPU_perf_top.vhd",
+        "snapshot": "rtl/int8_16/INT8_16_DPU_perf_top.vhd",
+        "sha256": "b3173d3adc784fd29701950fe85a81df43f338508359d860802b0ddf05d1ad01"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/int16_32/needed_flopoco_files/def_package.vhd",
+        "snapshot": "rtl/int16_32/needed_flopoco_files/def_package.vhd",
+        "sha256": "9a0e071ebbaea584112c0839b4f00ed34db79d328ead06f3e7b327ea9e2d10d8"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/int16_32/needed_flopoco_files/Multiplier_INT.vhd",
+        "snapshot": "rtl/int16_32/needed_flopoco_files/Multiplier_INT.vhd",
+        "sha256": "25c36626d7348a43134caef7200097252dd43f3101bed6ad9648d8c29ff3569a"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/int16_32/needed_flopoco_files/Adder_INT.vhd",
+        "snapshot": "rtl/int16_32/needed_flopoco_files/Adder_INT.vhd",
+        "sha256": "f7d69e8e8d0ab861037f84b33f545ee531f79aa3cb9b5203bc58f96aa1111c89"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/int16_32/DPU_TOP_INT.vhd",
+        "snapshot": "rtl/int16_32/DPU_TOP_INT.vhd",
+        "sha256": "6baffd9342c51c719045c2bc69f9510cc8bf8607d293d44fa127fbe5070ea51f"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/wrappers/INT16_32_DPU_perf_top.vhd",
+        "snapshot": "rtl/int16_32/INT16_32_DPU_perf_top.vhd",
+        "sha256": "5c7fcd2e7025c6de966afb2219becbe62905e7e35417f0e06e96db48661b9a1c"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/fxp8_16/needed_flopoco_files/FixedPoint8_16_MAC.vhd",
+        "snapshot": "rtl/fxp8_16/needed_flopoco_files/FixedPoint8_16_MAC.vhd",
+        "sha256": "6c4700f4d5caeb9a6372e44e9e1abd75668e003f44c02ad6a7acb57ef8b1a653"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/fxp8_16/FixedPoint8_16DPU.vhd",
+        "snapshot": "rtl/fxp8_16/FixedPoint8_16DPU.vhd",
+        "sha256": "fcc97c61e08bb189bf1fa41cdb01d3a65f606bdca4b1ed777dbad4f093ab442a"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/wrappers/FXP8_16_DPU_perf_top.vhd",
+        "snapshot": "rtl/fxp8_16/FXP8_16_DPU_perf_top.vhd",
+        "sha256": "c12bb3f3e2369fb16a227ce5d8a6dc35fd4dac17d0ac3d0e7244b608eaf4af05"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/fxp16_32/needed_flopoco_files/FixedPointMAC.vhd",
+        "snapshot": "rtl/fxp16_32/needed_flopoco_files/FixedPointMAC.vhd",
+        "sha256": "06395b38693aaecea1281b46757887f55125d39b9b8e665a8f4e4fe6597e11a7"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/fxp16_32/FixedPointDPU.vhd",
+        "snapshot": "rtl/fxp16_32/FixedPointDPU.vhd",
+        "sha256": "0ba8064f2b2bd3059ef2b43568b1565f90e9fbd8251470fbb1009daf4afd9767"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/wrappers/FXP16_32_DPU_perf_top.vhd",
+        "snapshot": "rtl/fxp16_32/FXP16_32_DPU_perf_top.vhd",
+        "sha256": "f467f82599ac304e9930c7d23c143aad4e8f98dc48bde1610f7906d2f2d9d8ff"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/fp8/needed_flopoco_files/FMA_FP8e4m3flopoco.vhd",
+        "snapshot": "rtl/fp8/needed_flopoco_files/FMA_FP8e4m3flopoco.vhd",
+        "sha256": "0e1645ac6623031633a621f6b3061d83fc364659d11444609e73094aca2c88ff"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/fp8/DPU_FP8e4m3flopoco.vhd",
+        "snapshot": "rtl/fp8/DPU_FP8e4m3flopoco.vhd",
+        "sha256": "8c84f02a8755c42683cd02c2c29e0e2b2c23be487c90a9110098115e83cd7d0d"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/wrappers/FP8_DPU_perf_top.vhd",
+        "snapshot": "rtl/fp8/FP8_DPU_perf_top.vhd",
+        "sha256": "0b215803780d7ab6d56cc701f16126caa3784845e6d079a3f836cf6ac976c357"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/fp16/needed_flopoco_files/FP16_FMA.vhd",
+        "snapshot": "rtl/fp16/needed_flopoco_files/FP16_FMA.vhd",
+        "sha256": "0effeb6b7e459c9a050c26c8b72f3c933ada35c84ccbce3bf1ef59c8431d1716"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/fp16/FP16_DPU.vhd",
+        "snapshot": "rtl/fp16/FP16_DPU.vhd",
+        "sha256": "d7961468960edfc086e1479139abac3a6b15b5d6d0311a747acf84156079a849"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/wrappers/FP16_DPU_perf_top.vhd",
+        "snapshot": "rtl/fp16/FP16_DPU_perf_top.vhd",
+        "sha256": "77b655a3024c4e23f68ac9fa72d99f53cffe1bcdd175015b75614d112635d3b1"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/fp32/needed_flopoco_files/FMA_FP32e8m23flopoco.vhd",
+        "snapshot": "rtl/fp32/needed_flopoco_files/FMA_FP32e8m23flopoco.vhd",
+        "sha256": "83d9bfaf0680c20beca273b912c695c92dd1adbc15df7fca04cca70b5bca2b83"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/fp32/DPU_FP32e8m23flopoco.vhd",
+        "snapshot": "rtl/fp32/DPU_FP32e8m23flopoco.vhd",
+        "sha256": "08e111d5928f8464af0ba779b9d63490dc868754f9f11959f32e74b6894e59d4"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/wrappers/FP32_DPU_perf_top.vhd",
+        "snapshot": "rtl/fp32/FP32_DPU_perf_top.vhd",
+        "sha256": "c26a24543131f24a4ae6d53fbbe738bace0ed2a63386536c64a79565675aa8fc"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/posit8/needed_flopoco_files/Posit_Mult.vhd",
+        "snapshot": "rtl/posit8/needed_flopoco_files/Posit_Mult.vhd",
+        "sha256": "2d0ebd0a35b08c78c1057425ce2b91c834c5bc521ef301c4ec3f448b94afa544"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/posit8/needed_flopoco_files/Posit_Adder.vhd",
+        "snapshot": "rtl/posit8/needed_flopoco_files/Posit_Adder.vhd",
+        "sha256": "2efd8fbfde5b2e864ea3ed775057e59fd45581a2af85f5a40caaf2f6609e784a"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/posit8/Posit_DPU.vhd",
+        "snapshot": "rtl/posit8/Posit_DPU.vhd",
+        "sha256": "5d8f7bbc326e7240d90ccc067efe60a70e34020562d8252117c718e396d7a04a"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/wrappers/POSIT8_DPU_perf_top.vhd",
+        "snapshot": "rtl/posit8/POSIT8_DPU_perf_top.vhd",
+        "sha256": "73c98968589eba2e018d6e45d6ecf963884b6430414c766ec4e3e791a369b114"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "snapshot": "rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "4fe6d463b6fd15f9e9855e7895cc23f622bc7a2c940fd21b07ae9f9a54ac5b6b"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "snapshot": "rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "sha256": "c5ea2b5e1a14f77293d707d98b0b66a62b3f2f9b26f922e4c2803655d3854241"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/posit16/posit16_0_DPU.vhd",
+        "snapshot": "rtl/posit16/posit16_0_DPU.vhd",
+        "sha256": "150704cdf6cdca6e34239247cb54b94a9891fbe19248bf21d9e1461fd3bad180"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/wrappers/POSIT16_DPU_perf_top.vhd",
+        "snapshot": "rtl/posit16/POSIT16_DPU_perf_top.vhd",
+        "sha256": "d329947fdeac20e730308197b7bab35366f1cbebb980cf71f50d6d809b9e16cd"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/posit32/needed_flopoco_files/Posit32_2_Mul.vhd",
+        "snapshot": "rtl/posit32/needed_flopoco_files/Posit32_2_Mul.vhd",
+        "sha256": "b389838e7e0ac91dca8fad1802b1f343db45ffed1918590fb9145c5ca0c3c113"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/posit32/needed_flopoco_files/Posit32_2_Add.vhd",
+        "snapshot": "rtl/posit32/needed_flopoco_files/Posit32_2_Add.vhd",
+        "sha256": "bd6e00ab915d3d6a0a00206db2bb1145e4865e20ed35a50575b3a6519e7e934e"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/posit32/Posit32_2_DPU.vhd",
+        "snapshot": "rtl/posit32/Posit32_2_DPU.vhd",
+        "sha256": "bc371b590aa9776a48e41513411ec882025dad9f9b799b1b3d715bbffd164207"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/wrappers/POSIT32_DPU_perf_top.vhd",
+        "snapshot": "rtl/posit32/POSIT32_DPU_perf_top.vhd",
+        "sha256": "f865727499f66607dab191bd04fb0ad37ea91a60f94c71185de40e7f861cfb9f"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/lns16/needed_flopoco_files/LNSSubCorrectionPkg.vhd",
+        "snapshot": "rtl/lns16/needed_flopoco_files/LNSSubCorrectionPkg.vhd",
+        "sha256": "09065f1d4f861050dff4fd9d3904010d7efa463d25af6a67b87518704e4fce3f"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/lns16/needed_flopoco_files/LNSMul_4_9_comb.vhd",
+        "snapshot": "rtl/lns16/needed_flopoco_files/LNSMul_4_9_comb.vhd",
+        "sha256": "9240298473f5c5a665d555d9a1ffaa77e380a0832d105361b9b7b9faeb1a383f"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/lns16/needed_flopoco_files/LNSAddSub_4_9_comb.vhd",
+        "snapshot": "rtl/lns16/needed_flopoco_files/LNSAddSub_4_9_comb.vhd",
+        "sha256": "2324781efdaf369cf83fd43b415b8b58dec9b65b7d50a8444010b5ff12e363c4"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/lns16/LNS16_4_9_DPU.vhd",
+        "snapshot": "rtl/lns16/LNS16_4_9_DPU.vhd",
+        "sha256": "378daa2058d6b656c95d4bf398e4db4b04b7222de2f9b8b94013f4c6f4ab0a3d"
+      },
+      {
+        "original": "ParametricTensorCoreUnit/DPU_Performance_Area_Comparison/src/wrappers/LNS16_DPU_perf_top.vhd",
+        "snapshot": "rtl/lns16/LNS16_DPU_perf_top.vhd",
+        "sha256": "9368faf2000ffd81622d6381784ae06961070f76cca88260c6253e53a6aefc32"
+      },
+      {
+        "original": "syn_libraries/130nm/lib/sg13g2_stdcell_typ_1p20V_25C.lib",
+        "snapshot": "libraries/ihp130/cells.lib",
+        "sha256": "fe04935bafe2acfbbad808695c6b1511c3f2550d37a4d0cc23f776ff1763bb1b"
+      },
+      {
+        "original": "syn_libraries/15nm/NLDM/NanGate_15nm_OCL_typical_conditional_nldm.lib",
+        "snapshot": "libraries/nangate15/cells.lib",
+        "sha256": "095358eae5326b9ab5530b42b9835e190df7bf2d35bdd136b05940bfff01dfc3"
+      },
+      {
+        "original": "syn_libraries/NangateOpenCellLibrary_PDKv1_3_v2010_12/Front_End/Liberty/NLDM/NangateOpenCellLibrary_typical.lib",
+        "snapshot": "libraries/nangate45/cells.lib",
+        "sha256": "2efd0b32eb580e4e60e72fc0575bb3bc69aac907c91d908442e4ae6d7fe55895"
+      }
+    ],
+    "note": "Hashes identify exact source bytes even if the repository has local changes."
+  },
+  "compilation": {
+    "policy": "unique_ghdl_units",
+    "analyzed_files": [
+      "compilation/lzocshifter_14_to_14_counting_16_f0_uid6.vhdl",
+      "compilation/lzocshifter_14_to_14_counting_16_f0_uid6-arch.vhdl",
+      "compilation/positdecoder_16_1_f0_uid4.vhdl",
+      "compilation/positdecoder_16_1_f0_uid4-arch.vhdl",
+      "compilation/lzocshifter_14_to_14_counting_16_f0_uid10.vhdl",
+      "compilation/lzocshifter_14_to_14_counting_16_f0_uid10-arch.vhdl",
+      "compilation/positdecoder_16_1_f0_uid8.vhdl",
+      "compilation/positdecoder_16_1_f0_uid8-arch.vhdl",
+      "compilation/rightshiftersticky28_by_max_15_f0_uid12.vhdl",
+      "compilation/rightshiftersticky28_by_max_15_f0_uid12-arch.vhdl",
+      "compilation/positmult_16_1_f0_uid2.vhdl",
+      "compilation/positmult_16_1_f0_uid2-arch.vhdl",
+      "compilation/rightshiftersticky15_by_max_15_f0_uid12.vhdl",
+      "compilation/rightshiftersticky15_by_max_15_f0_uid12-arch.vhdl",
+      "compilation/lzcshifter_15_to_15_counting_16_f0_uid14.vhdl",
+      "compilation/lzcshifter_15_to_15_counting_16_f0_uid14-arch.vhdl",
+      "compilation/rightshiftersticky18_by_max_15_f0_uid16.vhdl",
+      "compilation/rightshiftersticky18_by_max_15_f0_uid16-arch.vhdl",
+      "compilation/positadd.vhdl",
+      "compilation/positadd-arch.vhdl",
+      "compilation/dotproductunitposit16.vhdl",
+      "compilation/dotproductunitposit16-behavioral.vhdl"
+    ],
+    "units": [
+      {
+        "file": "compilation/lzocshifter_14_to_14_counting_16_f0_uid6.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "2e9dd12f7d337dfe565cf53a6532000e6a972ffa1d3081d4e4b34646cd228181"
+      },
+      {
+        "file": "compilation/lzocshifter_14_to_14_counting_16_f0_uid6-arch.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "7e73f3885c8f4971b42aeafd397b3761d740b2ff17d63500817d0bc6f36cf75e"
+      },
+      {
+        "file": "compilation/positdecoder_16_1_f0_uid4.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "46998a4c7dcad7cc16726fab5a863725c070a87261c535b00ef33207113bd758"
+      },
+      {
+        "file": "compilation/positdecoder_16_1_f0_uid4-arch.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "a9adb96ec4c897312e51dd537e64f0302523d3ec84c648d459a3ea3ace811979"
+      },
+      {
+        "file": "compilation/lzocshifter_14_to_14_counting_16_f0_uid10.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "e6a661a8e8a776a4671adc7b768d157ab9d65ac6f46aa0b43505cb1613473b9a"
+      },
+      {
+        "file": "compilation/lzocshifter_14_to_14_counting_16_f0_uid10-arch.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "5c33b12d758a8402e2c60ebf7dfa5d350ac9ea4c4d7da7c8b8681f2455bbd46e"
+      },
+      {
+        "file": "compilation/positdecoder_16_1_f0_uid8.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "87f1635f9f952a84b7bcee764e2761f40ea3de8c4a6565423913540ce6c1186f"
+      },
+      {
+        "file": "compilation/positdecoder_16_1_f0_uid8-arch.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "7298de96d1f07adf51dd285f7efe9217960744d0d41c6d5e07127208f5209ac7"
+      },
+      {
+        "file": "compilation/rightshiftersticky28_by_max_15_f0_uid12.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "d913952b0b2c848437b3812e2006200eee8699d7f6652b182fdf7687beb45c1f"
+      },
+      {
+        "file": "compilation/rightshiftersticky28_by_max_15_f0_uid12-arch.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "6f1f39650874d0d52d0d17721cd8690b4766e7137ad71985837fee295d6069cb"
+      },
+      {
+        "file": "compilation/positmult_16_1_f0_uid2.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "9ac0b19374b0c607e5764bf4a6ed0a7f156cceeb01e1d4dd8015241e43013400"
+      },
+      {
+        "file": "compilation/positmult_16_1_f0_uid2-arch.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "94d09058213c1e1bebaa9d4df7e19d5232a0d21754b9bf4bf9448c68e7c60641"
+      },
+      {
+        "file": "compilation/rightshiftersticky15_by_max_15_f0_uid12.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "sha256": "39e63864faa2d3592a018c89bc20a6a98fc356b9e241e481d5308dbd24476f20"
+      },
+      {
+        "file": "compilation/rightshiftersticky15_by_max_15_f0_uid12-arch.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "sha256": "6ee89499a90ee99e4445e64402607b8f90f46543c1d039894655529289254073"
+      },
+      {
+        "file": "compilation/lzcshifter_15_to_15_counting_16_f0_uid14.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "sha256": "10745437473d3801107c70f94569034c4a2003a82a2fae059028ee952069f3cc"
+      },
+      {
+        "file": "compilation/lzcshifter_15_to_15_counting_16_f0_uid14-arch.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "sha256": "6b7ef91dc963e39ae4227387b2310176ee6d324a6b7aee16521fb61835e1d633"
+      },
+      {
+        "file": "compilation/rightshiftersticky18_by_max_15_f0_uid16.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "sha256": "41146eebb23bf31641770a82710f9dc6d9e7d8a85fcbbc84a8ec4177b5e454b1"
+      },
+      {
+        "file": "compilation/rightshiftersticky18_by_max_15_f0_uid16-arch.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "sha256": "d1ffdd707f224901dcf6ec6f827c2c2be94db91706269e7d974be94a14945732"
+      },
+      {
+        "file": "compilation/positadd.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "sha256": "729c7c012db7b36d658fe3da3530950d10f73572c8141b360b9bfc65e05de500"
+      },
+      {
+        "file": "compilation/positadd-arch.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "sha256": "f23c2fc5f83d54404067f50373204586a0aee494769d3a55b4f258236c38aea3"
+      },
+      {
+        "file": "compilation/dotproductunitposit16.vhdl",
+        "source": "sources/rtl/posit16/posit16_0_DPU.vhd",
+        "sha256": "4262c1a667c2fe8a31aa0c95df78247d01f9a41cc3f9534d4df96dbe204f5dc7"
+      },
+      {
+        "file": "compilation/dotproductunitposit16-behavioral.vhdl",
+        "source": "sources/rtl/posit16/posit16_0_DPU.vhd",
+        "sha256": "38484577fe8c92165ffe537a76a5c768545788373ca1dc0ff77f3dd749c524cd"
+      }
+    ],
+    "identical_duplicates": [
+      {
+        "unit": "lzocshifter_14_to_14_counting_16_f0_uid6.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "shared_with": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "2e9dd12f7d337dfe565cf53a6532000e6a972ffa1d3081d4e4b34646cd228181"
+      },
+      {
+        "unit": "lzocshifter_14_to_14_counting_16_f0_uid6-arch.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "shared_with": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "7e73f3885c8f4971b42aeafd397b3761d740b2ff17d63500817d0bc6f36cf75e"
+      },
+      {
+        "unit": "positdecoder_16_1_f0_uid4.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "shared_with": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "46998a4c7dcad7cc16726fab5a863725c070a87261c535b00ef33207113bd758"
+      },
+      {
+        "unit": "positdecoder_16_1_f0_uid4-arch.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "shared_with": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "a9adb96ec4c897312e51dd537e64f0302523d3ec84c648d459a3ea3ace811979"
+      },
+      {
+        "unit": "lzocshifter_14_to_14_counting_16_f0_uid10.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "shared_with": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "e6a661a8e8a776a4671adc7b768d157ab9d65ac6f46aa0b43505cb1613473b9a"
+      },
+      {
+        "unit": "lzocshifter_14_to_14_counting_16_f0_uid10-arch.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "shared_with": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "5c33b12d758a8402e2c60ebf7dfa5d350ac9ea4c4d7da7c8b8681f2455bbd46e"
+      },
+      {
+        "unit": "positdecoder_16_1_f0_uid8.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "shared_with": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "87f1635f9f952a84b7bcee764e2761f40ea3de8c4a6565423913540ce6c1186f"
+      },
+      {
+        "unit": "positdecoder_16_1_f0_uid8-arch.vhdl",
+        "source": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Add.vhd",
+        "shared_with": "sources/rtl/posit16/needed_flopoco_files/posit16_0_Mul.vhd",
+        "sha256": "7298de96d1f07adf51dd285f7efe9217960744d0d41c6d5e07127208f5209ac7"
+      }
+    ]
+  }
+}

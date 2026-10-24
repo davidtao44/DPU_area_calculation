@@ -1,0 +1,75 @@
+{
+  "reviewed_at": "2026-10-09",
+  "files": [
+    {
+      "component": "navegador",
+      "path": "frontend/src/App.tsx",
+      "sha256": "d0902264cf3e29c1cf40cfe4096f6a5434cab55648a455a90dbb097ea6807333"
+    },
+    {
+      "component": "navegador",
+      "path": "frontend/src/shared/api.ts",
+      "sha256": "2a55bd7f3f2b6897b115cc64bd71080bb786baab3b744d756a2ecf7c55d04a7f"
+    },
+    {
+      "component": "api",
+      "path": "backend/src/area_lab/main.py",
+      "sha256": "907c177d47bb36986fdfe5a4d74f5d4e0e6e893e86dc19be6112f129ade74a92"
+    },
+    {
+      "component": "api",
+      "path": "backend/src/area_lab/api/routes.py",
+      "sha256": "441d24e2026a6c80f38d166eb81bd2985a8214a4eceff99eb8ad40fe0a64accd"
+    },
+    {
+      "component": "aplicacion",
+      "path": "backend/src/area_lab/application/services.py",
+      "sha256": "6527d19e2da36d301b6f57d4eb0b645064affa95ac72d61e3d59651c84c1dc12"
+    },
+    {
+      "component": "dominio",
+      "path": "backend/src/area_lab/domain/models.py",
+      "sha256": "dc92c89738effcfe25ef316c05eb093e193ad605c1c2c3b2a5ed7dc6d0b0b295"
+    },
+    {
+      "component": "puertos",
+      "path": "backend/src/area_lab/domain/ports.py",
+      "sha256": "b4daba9608b40fd25f5a7ac8907afcae3074732020d9afa5478fd3ff3195162c"
+    },
+    {
+      "component": "worker",
+      "path": "backend/src/area_lab/application/services.py",
+      "sha256": "6527d19e2da36d301b6f57d4eb0b645064affa95ac72d61e3d59651c84c1dc12"
+    },
+    {
+      "component": "adaptador",
+      "path": "backend/src/area_lab/infrastructure/synthesis.py",
+      "sha256": "f993e7afb82f25a9398bb4fc4cf259d8d06f111014feb477a03cdaaf3678d0c2"
+    },
+    {
+      "component": "herramientas",
+      "path": "backend/src/area_lab/infrastructure/process_runner.py",
+      "sha256": "643e9f3e13bc2246d2be9858018f4e6d8c489e2a5754c15668159f49b4281d35"
+    },
+    {
+      "component": "herramientas",
+      "path": "backend/src/area_lab/infrastructure/validation.py",
+      "sha256": "afcf8aae2af843dd80663504bb0f93c63c4bbfe12b4d64a622cd635c6ee027a8"
+    },
+    {
+      "component": "repositorio",
+      "path": "backend/src/area_lab/infrastructure/sqlite_repository.py",
+      "sha256": "ea85e7695251739c3a31a5ca799d8f9358b3e315654e4ac5f16cc0a019c84cb1"
+    },
+    {
+      "component": "assets",
+      "path": "backend/src/area_lab/infrastructure/catalog.py",
+      "sha256": "51385afcf2c6bfd4d491f47f230f9f840ad72b71ecc610e5193f616ace350d45"
+    },
+    {
+      "component": "assets",
+      "path": "assets/manifest.json",
+      "sha256": "01807f65c0b8c6035fc792c521e7faaeb295099df8cdc9b19be975125e7b1534"
+    }
+  ]
+}
