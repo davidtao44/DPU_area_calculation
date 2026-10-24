@@ -32,6 +32,7 @@ ARTIFACTS = (
     "stat.json",
     "synth.ys",
     "run.log",
+    "yosys.log",
     "vectors.txt",
     "stimuli.txt",
     "rtl-results.txt",
@@ -81,6 +82,7 @@ class GhdlYosysSynthesis:
         manifest = {
             "schema_version": 2,
             "experiment_id": experiment_id,
+            "command_timeout_seconds": self.settings.command_timeout_seconds,
             "design": asdict(design),
             "technology": asdict(technology),
             "source_sha256": source_hashes,
@@ -152,7 +154,7 @@ tee -o stat.json stat -liberty cells.lib -json
             "write_verilog -noattr cells_sim.v\n"
         )
         progress("mapping")
-        self.runner.run("yosys", ["-s", "synth.ys"], directory)
+        self.runner.run("yosys", ["-L", "yosys.log", "-s", "synth.ys"], directory)
         progress("checking")
         summary = summarize_netlist(
             json.loads((directory / "mapped.json").read_text()), cells, design.top

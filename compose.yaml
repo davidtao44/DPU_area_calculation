@@ -9,7 +9,7 @@ services:
     volumes:
       - area-lab-data:/app/data
     environment:
-      AREA_LAB_COMMAND_TIMEOUT_SECONDS: "900"
+      AREA_LAB_COMMAND_TIMEOUT_SECONDS: "${AREA_LAB_COMMAND_TIMEOUT_SECONDS:-900}"
       AREA_LAB_QUEUE_CAPACITY: "4"
     restart: unless-stopped
     stop_grace_period: 20m

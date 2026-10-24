@@ -1,5 +1,6 @@
 import asyncio
 import io
+import sys
 import zipfile
 from contextlib import asynccontextmanager, suppress
 from uuid import uuid4
@@ -9,6 +10,7 @@ import pytest
 
 from area_lab.domain.models import Experiment, JobStatus
 from area_lab.infrastructure.designs import DESIGNS
+from area_lab.infrastructure.process_runner import ProcessRunner
 from area_lab.infrastructure.settings import Settings
 from area_lab.main import create_app
 
@@ -33,6 +35,7 @@ def test_artifact_zip_includes_nested_sources_for_other_designs(tmp_path):
     unit.parent.mkdir()
     unit.write_text("-- generated compilation unit\n")
     (directory / "run.log").write_text("test diagnostics\n")
+    (directory / "yosys.log").write_text("full Yosys diagnostics\n")
 
     async def scenario():
         async with client_for(app) as client:
@@ -41,6 +44,7 @@ def test_artifact_zip_includes_nested_sources_for_other_designs(tmp_path):
             with zipfile.ZipFile(io.BytesIO(response.content)) as archive:
                 assert archive.read(relative) == source.read_bytes()
                 assert archive.read("run.log") == b"test diagnostics\n"
+                assert archive.read("yosys.log") == b"full Yosys diagnostics\n"
                 assert archive.read("compilation/ieee_helper.vhdl") == unit.read_bytes()
 
     asyncio.run(asyncio.wait_for(scenario(), timeout=10))
@@ -136,5 +140,45 @@ def test_failed_worker_persists_failure_without_area(tmp_path, technology_id):
         assert experiment.status == "failed"
         assert experiment.report is None
         assert experiment.error == "Intentional tool failure"
+
+    asyncio.run(asyncio.wait_for(scenario(), timeout=10))
+
+
+def test_timeout_diagnostics_reach_api_logs_and_artifacts(tmp_path, caplog):
+    class TimeoutGateway:
+        def run(self, experiment_id, *_args):
+            directory = tmp_path / "runs" / experiment_id
+            directory.mkdir(parents=True)
+            ProcessRunner(None, timeout=1).run(
+                sys.executable,
+                [
+                    "-u",
+                    "-c",
+                    "import sys, time; print('synthesis stage diagnostic'); "
+                    "print('synthesis stderr diagnostic', file=sys.stderr); time.sleep(20)",
+                ],
+                directory,
+            )
+
+    app = create_app(Settings(data_dir=tmp_path), synthesis=TimeoutGateway())
+
+    async def scenario():
+        async with client_for(app) as client:
+            response = await client.post("/api/v1/experiments", json={"technology_id": "nangate45"})
+            assert response.status_code == 202
+            identifier = response.json()["id"]
+            await asyncio.wait_for(app.state.service.queue.join(), timeout=5)
+            experiment = (await client.get(f"/api/v1/experiments/{identifier}")).json()
+            assert experiment["status"] == "failed"
+            assert experiment["report"] is None
+            assert "synthesis stage diagnostic" in experiment["error"]
+            assert "synthesis stderr diagnostic" in experiment["error"]
+            logs = (await client.get(f"/api/v1/experiments/{identifier}/logs")).json()
+            assert "synthesis stage diagnostic" in logs["content"]
+            artifacts = await client.get(f"/api/v1/experiments/{identifier}/artifacts")
+            assert artifacts.status_code == 200
+            with zipfile.ZipFile(io.BytesIO(artifacts.content)) as archive:
+                assert "synthesis stage diagnostic" in archive.read("run.log").decode()
+        assert "synthesis stage diagnostic" in caplog.text
 
     asyncio.run(asyncio.wait_for(scenario(), timeout=10))

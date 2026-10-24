@@ -41,3 +41,5 @@ def test_actual_pipeline_reports_only_fully_mapped_validated_cells(
     assert (directory / "report.csv").read_text().startswith("name,category,count")
     assert (directory / "mapped.v").stat().st_size > 0
     assert (directory / "sources" / design.wrapper_file).is_file()
+    assert "Executing script file `synth.ys'" in (directory / "yosys.log").read_text()
+    assert report["manifest"]["command_timeout_seconds"] == settings.command_timeout_seconds

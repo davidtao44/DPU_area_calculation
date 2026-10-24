@@ -98,13 +98,32 @@ docker compose down
 
 `down` conserva el volumen. No ejecutar `down -v` si se desea conservar el historial.
 El contenedor trabaja sin root, con un único worker HTTP y una cola acotada.
-Los subprocesos EDA tienen un tiempo máximo configurable de 900 segundos por
-comando; Compose permite hasta 4 GB y limita el proceso a 2 CPU. El límite
+Los subprocesos EDA tienen un tiempo máximo de 900 segundos por comando de forma
+predeterminada, configurable con `AREA_LAB_COMMAND_TIMEOUT_SECONDS` (entero positivo).
+Compose permite hasta 4 GB y limita el proceso a 2 CPU. El límite
 inicial de 180 segundos resultó insuficiente para FXP16/32. Se mantiene un
 solo worker EDA; el plazo de apagado es de 20 minutos. Si no alcanza para
 vaciar la cola, los trabajos inconclusos se marcarán interrumpidos al reiniciar.
 Si un reinicio interrumpe una evaluación, se marca como interrumpida y puede
 crearse otra; los trabajos pendientes no se reanudan automáticamente.
+
+Para permitir hasta una hora por comando, definir en el archivo `.env` de esta
+carpeta `AREA_LAB_COMMAND_TIMEOUT_SECONDS=3600` y recrear el servicio, o usar:
+
+```bash
+AREA_LAB_COMMAND_TIMEOUT_SECONDS=3600 docker compose up --build -d
+```
+
+El valor se registra en el manifiesto de cada nueva evaluación. Ampliar el plazo
+no garantiza que un diseño termine; los límites de memoria y CPU siguen aplicando.
+
+Los diagnósticos se escriben en `data/runs/{id}/run.log` durante la ejecución
+(`/app/data/runs/{id}/run.log` dentro del contenedor).
+La síntesis conserva además `yosys.log` con guardado por línea. Si una herramienta
+falla o excede el plazo, el error del experimento y los logs de la API incluyen
+las últimas 40 líneas, limitadas a los últimos 8 KB de su salida. La interfaz
+permite descargar el diagnóstico ZIP de una evaluación fallida con los archivos
+disponibles, incluido el registro completo.
 
 ## Organización y arquitectura limpia
 
@@ -200,7 +219,9 @@ Frontend: <http://localhost:5173>. Vite redirige `/api` a FastAPI en el puerto 8
 Si las herramientas no están en PATH, definir
 `AREA_LAB_TOOLCHAIN_BIN=/ruta/oss-cad-suite/bin` antes de iniciar el servicio.
 Las variables `AREA_LAB_*` pueden cambiar rutas y límites; `.env.example`
-documenta los valores, pero no se carga automáticamente.
+documenta los valores. Docker Compose lee `.env` automáticamente para sustituir
+el timeout; al iniciar la API directamente, hay que exportar las variables
+en la terminal, pues la aplicación no carga `.env` por sí sola.
 
 ## API mínima
 

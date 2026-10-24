@@ -59,8 +59,17 @@ export function ReportPanel({ experiment }: { experiment?: Experiment }) {
       {experiment && ['failed', 'interrupted'].includes(experiment.status) && (
         <div className="error-state" role="alert">
           <h3>La evaluación no produjo un área válida</h3>
-          <p>{experiment.error}</p>
+          <p className="tool-error">{experiment.error}</p>
           <p>Consulta los logs para identificar la etapa que falló.</p>
+          {experiment.status === 'failed' && (
+            <a
+              className="button secondary"
+              href={apiUrl(`/api/v1/experiments/${experiment.id}/artifacts`)}
+            >
+              <Download size={15} aria-hidden="true" />
+              Descargar diagnóstico ZIP
+            </a>
+          )}
         </div>
       )}
       {report && (

@@ -938,6 +938,12 @@ td small {
   font-size: 11px;
   margin-top: 8px;
 }
+.error-state .tool-error {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 280px;
+  overflow: auto;
+}
 .loading {
   padding: 40px;
   color: var(--muted);

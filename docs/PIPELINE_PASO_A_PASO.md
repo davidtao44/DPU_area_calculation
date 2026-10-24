@@ -474,6 +474,7 @@ Fuente: [estadísticas de Yosys](https://yosyshq.readthedocs.io/projects/yosys/e
 | `report.json` | Total, desglose y validaciones |
 | `report.csv` | Cantidad y área por tipo de celda |
 | `run.log` | Comandos, salidas, errores y duración |
+| `yosys.log` | Registro de la síntesis Yosys, guardado por línea |
 | `vectors.txt` | Estímulos y resultados esperados |
 | Testbenches y scripts | Evidencia para revisar la ejecución |
 
@@ -565,7 +566,12 @@ redirige `/api` a FastAPI en el puerto 8000. En el contenedor final ambos se
 acceden mediante el servidor FastAPI del puerto 8000.
 
 Los límites Compose controlan recursos del programa: 900 segundos **por
-comando**, hasta 4 GB y 2 CPU, con un solo worker EDA. La espera de apagado de
+comando** de forma predeterminada, configurables con
+`AREA_LAB_COMMAND_TIMEOUT_SECONDS` en `.env` o en el entorno; hasta 4 GB y
+2 CPU, con un solo worker EDA. El timeout efectivo queda en `manifest.json`.
+Los errores de herramientas incluyen un extracto de las últimas 40 líneas,
+limitado a 8 KB, y los registros completos se conservan en el ZIP incluso si
+la evaluación falla. La espera de apagado de
 20 minutos no garantiza vaciar toda la cola; los trabajos inconclusos se
 marcan interrumpidos al reiniciar. Son límites de ejecución, no parámetros
 del ASIC. El límite anterior de 180 segundos se alcanzó en FXP16/32 con IHP130.
